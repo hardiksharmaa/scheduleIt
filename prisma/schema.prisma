@@ -1,0 +1,291 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── NextAuth Models ──────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  picture       String?   @db.Text  // base64 uploaded avatar (never put in JWT)
+  username      String?   @unique
+  timezone      String    @default("UTC")
+  password      String?   // hashed, for credentials provider
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts             Account[]
+  sessions             Session[]
+  eventTypes           EventType[]
+  bookingsAsHost       Booking[]            @relation("BookingHost")
+  availability         Availability[]
+  availabilityOverrides AvailabilityOverride[]
+  calendarIntegrations CalendarIntegration[]
+  ownedTeams           Team[]               @relation("TeamOwner")
+  teamMemberships      TeamMember[]
+
+  @@index([email])
+  @@index([username])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Event Types ──────────────────────────────────────────────────────────────
+
+enum EventTypeKind {
+  ONE_ON_ONE
+  GROUP
+  ROUND_ROBIN
+  COLLECTIVE
+}
+
+enum LocationType {
+  GOOGLE_MEET
+  ZOOM
+  TEAMS
+  PHONE
+  IN_PERSON
+  OTHER
+}
+
+model EventType {
+  id            String        @id @default(cuid())
+  userId        String
+  teamId        String?
+  title         String
+  slug          String
+  description   String?       @db.Text
+  duration      Int           // minutes
+  kind          EventTypeKind @default(ONE_ON_ONE)
+  locationType  LocationType  @default(GOOGLE_MEET)
+  locationValue String?       // custom address or phone instruction
+  bufferBefore  Int           @default(0)  // minutes
+  bufferAfter   Int           @default(0)  // minutes
+  minNotice     Int           @default(0)  // minutes ahead required
+  maxBookings      Int?          // null = unlimited
+  maxAdvanceDays   Int?          @default(60)  // rolling booking window in days; null = unlimited
+  isActive         Boolean       @default(true)
+  color            String?       @default("#c4956a")
+  availabilityDays Int[]         // selected day-of-week (0=Sun…6=Sat); empty = use all active days
+  createdAt        DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team     Team?     @relation(fields: [teamId], references: [id])
+  bookings Booking[]
+
+  @@unique([userId, slug])
+  @@index([userId])
+  @@index([teamId])
+}
+
+// ─── Bookings ─────────────────────────────────────────────────────────────────
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  RESCHEDULED
+  COMPLETED
+  NO_SHOW
+}
+
+model Booking {
+  id               String        @id @default(cuid())
+  eventTypeId      String
+  hostId           String
+  inviteeName      String
+  inviteeEmail     String
+  inviteeTimezone  String        @default("UTC")
+  startTime        DateTime
+  endTime          DateTime
+  status           BookingStatus @default(CONFIRMED)
+  notes            String?       @db.Text
+  location         String?       // resolved meeting link or address
+  meetingId        String?       // Zoom / Teams meeting ID
+  cancelToken      String?       @unique
+  rescheduleToken  String?       @unique
+  cancelledAt      DateTime?
+  cancelledBy      String?       // "host" | "invitee"
+  cancelReason     String?       @db.Text
+  calendarEventId  String?       // Google Calendar event ID
+  reminderSent     Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+  host      User      @relation("BookingHost", fields: [hostId], references: [id])
+
+  @@index([hostId])
+  @@index([eventTypeId])
+  @@index([inviteeEmail])
+  @@index([startTime])
+  @@index([status])
+  @@index([cancelToken])
+  @@index([rescheduleToken])
+  @@index([createdAt])
+  // Compound indexes for common query patterns
+  @@index([hostId, status])
+  @@index([hostId, startTime])
+  @@index([hostId, createdAt])
+  @@index([eventTypeId, status])
+}
+
+// ─── Availability ─────────────────────────────────────────────────────────────
+
+model Availability {
+  id        String   @id @default(cuid())
+  userId    String
+  dayOfWeek Int      // 0 = Sunday … 6 = Saturday
+  startTime String   // "09:00" in user's timezone
+  endTime   String   // "17:00" in user's timezone
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, dayOfWeek])
+  @@index([userId])
+}
+
+model AvailabilityOverride {
+  id        String   @id @default(cuid())
+  userId    String
+  date      DateTime @db.Date  // specific date
+  isBlocked Boolean  @default(true)  // true = whole day off
+  startTime String?  // custom start if not blocked
+  endTime   String?  // custom end if not blocked
+  reason    String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+// ─── Calendar Integrations ────────────────────────────────────────────────────
+
+enum IntegrationProvider {
+  GOOGLE_CALENDAR
+  ZOOM
+  MICROSOFT_TEAMS
+}
+
+model CalendarIntegration {
+  id            String              @id @default(cuid())
+  userId        String
+  provider      IntegrationProvider
+  accessToken   String              @db.Text  // AES-256 encrypted
+  refreshToken  String?             @db.Text  // AES-256 encrypted
+  expiresAt     DateTime?
+  calendarId    String?             // primary calendar ID
+  isActive      Boolean             @default(true)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider])
+  @@index([userId])
+}
+
+// ─── Teams ────────────────────────────────────────────────────────────────────
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner      User         @relation("TeamOwner", fields: [ownerId], references: [id])
+  members    TeamMember[]
+  eventTypes EventType[]
+
+  @@index([ownerId])
+}
+
+enum TeamRole {
+  OWNER
+  MEMBER
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      TeamRole @default(MEMBER)
+  joinedAt  DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+// ─── Analytics ────────────────────────────────────────────────────────────────
+
+model AnalyticsSnapshot {
+  id                String   @id @default(cuid())
+  userId            String
+  date              DateTime @db.Date
+  totalBookings     Int      @default(0)
+  completedBookings Int      @default(0)
+  cancelledBookings Int      @default(0)
+  rescheduled       Int      @default(0)
+  createdAt         DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
