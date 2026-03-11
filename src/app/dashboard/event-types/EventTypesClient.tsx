@@ -82,13 +82,15 @@ const KIND_LABELS: Record<EventTypeKind, string> = {
 };
 
 const LOCATION_LABELS: Record<LocationType, string> = {
-  GOOGLE_MEET: "Google Meet",
-  ZOOM: "Zoom",
-  TEAMS: "Microsoft Teams",
+  GOOGLE_MEET: "Google Meet (Coming soon)",
+  ZOOM: "Zoom (Coming soon)",
+  TEAMS: "Microsoft Teams (Coming soon)",
   PHONE: "Phone Call",
   IN_PERSON: "In Person",
   OTHER: "Other",
 };
+
+const DISABLED_LOCATIONS: LocationType[] = ["GOOGLE_MEET", "ZOOM", "TEAMS"];
 
 const PRESET_COLORS = [
   "#D83F87",
@@ -147,7 +149,7 @@ const BLANK_FORM: FormState = {
   description: "",
   duration: 30,
   kind: "ONE_ON_ONE",
-  locationType: "ZOOM",
+  locationType: "PHONE",
   locationValue: "",
   bufferBefore: 0,
   bufferAfter: 0,
@@ -433,7 +435,8 @@ function EventForm({
           onChange={(v) => set("locationType", v)}
           options={(Object.entries(LOCATION_LABELS) as [LocationType, string][]).map(([value, label]) => ({
             value,
-            label: label,
+            label,
+            disabled: DISABLED_LOCATIONS.includes(value),
           }))}
         />
         {isIntegrationMissing && (

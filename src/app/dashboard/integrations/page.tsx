@@ -78,17 +78,31 @@ export default async function IntegrationsPage({ searchParams }: Props) {
           textTransform: "uppercase", marginBottom: 12 }}>
           Calendar
         </h2>
-        <IntegrationCard
-          icon={<Calendar size={18} color="#D83F87" />}
-          name="Google Calendar"
-          isConnected={isGoogleConnected}
-          connectedSince={isGoogleConnected && googleIntegration?.updatedAt ? fmtDate(googleIntegration.updatedAt) : null}
-          description={isGoogleConnected
-            ? "Busy times are automatically blocked · Google Meet links generated on booking."
-            : "Block off busy times and auto-generate Google Meet links on every booking."}
-          connectHref="/api/integrations/google/connect"
-          disconnectButton={<GoogleDisconnectButton />}
-        />
+        {/* Google Calendar — Coming Soon */}
+        <div style={{ background: "#2A1B3D", border: "1px solid #44318D", borderRadius: 10,
+          padding: "20px 24px", display: "flex", alignItems: "start",
+          justifyContent: "space-between", gap: 16, opacity: 0.6 }}>
+          <div style={{ display: "flex", alignItems: "start", gap: 14 }}>
+            <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#2A1B3D",
+              border: "1px solid #44318D", display: "flex", alignItems: "center",
+              justifyContent: "center", flexShrink: 0 }}>
+              <Calendar size={18} color="#D83F87" />
+            </div>
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>Google Calendar</div>
+              <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
+                Block off busy times and auto-generate Google Meet links on every booking.
+              </div>
+            </div>
+          </div>
+          <div style={{ flexShrink: 0, marginTop: 2 }}>
+            <span style={{ display: "inline-block", padding: "5px 12px", borderRadius: 6,
+              background: "#44318D", border: "1px solid #44318D",
+              color: "#888888", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap" }}>
+              Coming soon
+            </span>
+          </div>
+        </div>
       </section>
 
       {/* Conferencing */}
@@ -98,40 +112,62 @@ export default async function IntegrationsPage({ searchParams }: Props) {
           Conferencing
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <IntegrationCard
-            icon={
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect width="24" height="24" rx="5" fill="#00897B"/>
-                <path d="M15 10.5l3.5-2.5v8L15 13.5V10.5zM4 9h8.5A1.5 1.5 0 0 1 14 10.5v4A1.5 1.5 0 0 1 12.5 16H4A1.5 1.5 0 0 1 2.5 14.5v-4A1.5 1.5 0 0 1 4 9z" fill="white"/>
-              </svg>
-            }
-            name="Google Meet"
-            isConnected={isGoogleConnected}
-            connectedSince={isGoogleConnected && googleIntegration?.updatedAt ? fmtDate(googleIntegration.updatedAt) : null}
-            description={isGoogleConnected
-              ? "Google Meet links are automatically generated for Google Meet event types."
-              : "Auto-generate Google Meet links. Requires Google Calendar to be connected."}
-            connectHref="/api/integrations/google/connect"
-            disconnectButton={<GoogleDisconnectButton />}
-            setupNote={!isGoogleConnected ? "Connect Google Calendar above to enable Google Meet" : null}
-          />
-          <IntegrationCard
-            icon={
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect width="24" height="24" rx="5" fill="#2D8CFF"/>
-                <path d="M14.5 9.5v5l3.5 2V7.5l-3.5 2zM5 8h7.5A1.5 1.5 0 0 1 14 9.5v5A1.5 1.5 0 0 1 12.5 16H5A1.5 1.5 0 0 1 3.5 14.5v-5A1.5 1.5 0 0 1 5 8z" fill="white"/>
-              </svg>
-            }
-            name="Zoom"
-            isConnected={isZoomConnected}
-            connectedSince={isZoomConnected && zoomIntegration?.updatedAt ? fmtDate(zoomIntegration.updatedAt) : null}
-            description={isZoomConnected
-              ? "Zoom meetings are automatically created for Zoom event types."
-              : "Automatically create Zoom meetings for video call event types."}
-            connectHref="/api/integrations/zoom/connect"
-            disconnectButton={<IntegrationDisconnectButton apiPath="/api/integrations/zoom/disconnect" />}
-            
-          />
+          {/* Google Meet — Coming Soon */}
+          <div style={{ background: "#2A1B3D", border: "1px solid #44318D", borderRadius: 10,
+            padding: "20px 24px", display: "flex", alignItems: "start",
+            justifyContent: "space-between", gap: 16, opacity: 0.6 }}>
+            <div style={{ display: "flex", alignItems: "start", gap: 14 }}>
+              <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#2A1B3D",
+                border: "1px solid #44318D", display: "flex", alignItems: "center",
+                justifyContent: "center", flexShrink: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="5" fill="#00897B"/>
+                  <path d="M15 10.5l3.5-2.5v8L15 13.5V10.5zM4 9h8.5A1.5 1.5 0 0 1 14 10.5v4A1.5 1.5 0 0 1 12.5 16H4A1.5 1.5 0 0 1 2.5 14.5v-4A1.5 1.5 0 0 1 4 9z" fill="white"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>Google Meet</div>
+                <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
+                  Auto-generate Google Meet links. Requires Google Calendar to be connected.
+                </div>
+              </div>
+            </div>
+            <div style={{ flexShrink: 0, marginTop: 2 }}>
+              <span style={{ display: "inline-block", padding: "5px 12px", borderRadius: 6,
+                background: "#44318D", border: "1px solid #44318D",
+                color: "#888888", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap" }}>
+                Coming soon
+              </span>
+            </div>
+          </div>
+          {/* Zoom — Coming Soon */}
+          <div style={{ background: "#2A1B3D", border: "1px solid #44318D", borderRadius: 10,
+            padding: "20px 24px", display: "flex", alignItems: "start",
+            justifyContent: "space-between", gap: 16, opacity: 0.6 }}>
+            <div style={{ display: "flex", alignItems: "start", gap: 14 }}>
+              <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#2A1B3D",
+                border: "1px solid #44318D", display: "flex", alignItems: "center",
+                justifyContent: "center", flexShrink: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="5" fill="#2D8CFF"/>
+                  <path d="M14.5 9.5v5l3.5 2V7.5l-3.5 2zM5 8h7.5A1.5 1.5 0 0 1 14 9.5v5A1.5 1.5 0 0 1 12.5 16H5A1.5 1.5 0 0 1 3.5 14.5v-5A1.5 1.5 0 0 1 5 8z" fill="white"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>Zoom</div>
+                <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
+                  Automatically create Zoom meetings for video call event types.
+                </div>
+              </div>
+            </div>
+            <div style={{ flexShrink: 0, marginTop: 2 }}>
+              <span style={{ display: "inline-block", padding: "5px 12px", borderRadius: 6,
+                background: "#44318D", border: "1px solid #44318D",
+                color: "#888888", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap" }}>
+                Coming soon
+              </span>
+            </div>
+          </div>
           {/* Microsoft Teams — Coming Soon */}
           <div style={{ background: "#2A1B3D", border: "1px solid #44318D", borderRadius: 10,
             padding: "20px 24px", display: "flex", alignItems: "start",
