@@ -85,10 +85,10 @@ function StatCard({
       }`}
     >
       {accent && (
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/8 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-accent/8 via-transparent to-transparent" />
       )}
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-text-muted">{label}</CardTitle>
+        <CardTitle className="text-base font-medium text-text-muted">{label}</CardTitle>
         <div
           className={`flex h-8 w-8 items-center justify-center rounded-lg ${
             accent ? "bg-accent/15" : "bg-[#44318D]"
@@ -100,9 +100,9 @@ function StatCard({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold text-white">{value}</div>
+        <div className="text-3xl font-bold text-white">{value}</div>
         <p
-          className={`mt-1 text-xs ${
+          className={`mt-1 text-sm ${
             changePositive ? "text-emerald-400" : "text-text-muted"
           }`}
         >
@@ -122,8 +122,8 @@ function EmptyBookings() {
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#44318D]">
         <Calendar className="h-6 w-6 text-[#3a3a3a]" />
       </div>
-      <p className="text-sm font-medium text-white">No upcoming bookings</p>
-      <p className="mt-1 max-w-xs text-xs text-text-muted">
+      <p className="text-base font-medium text-white">No upcoming bookings</p>
+      <p className="mt-1 max-w-xs text-sm text-text-muted">
         Share your booking link to start receiving meetings.
       </p>
       <Link href="/dashboard/event-types" className="mt-4">
@@ -179,7 +179,7 @@ export default async function DashboardPage() {
         startTime: { gte: now },
       },
       orderBy: { startTime: "asc" },
-      take: 6,
+      take: 5,
       include: {
         eventType: { select: { title: true, color: true, duration: true } },
       },
@@ -188,7 +188,7 @@ export default async function DashboardPage() {
     db.eventType.findMany({
       where: { userId, isActive: true },
       orderBy: { createdAt: "asc" },
-      take: 6,
+      take: 0,
       select: { id: true, title: true, slug: true, duration: true, color: true },
     }),
     db.availability.findFirst({ where: { userId, isActive: true } }),
@@ -242,10 +242,10 @@ export default async function DashboardPage() {
       {/* ── Header ── */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-white">
             {firstName ? `Welcome back, ${firstName}!` : "Welcome back!"}
           </h1>
-          <p className="text-sm text-text-muted">
+          <p className="text-base text-text-muted">
             Here&apos;s what&apos;s happening with your schedule.
           </p>
         </div>
@@ -325,7 +325,7 @@ export default async function DashboardPage() {
                     >
                       {/* Avatar */}
                       <div
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold"
                         style={{ background: `${color}20`, color }}
                       >
                         {initials(b.inviteeName)}
@@ -333,10 +333,10 @@ export default async function DashboardPage() {
 
                       {/* Info */}
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-white">
+                        <p className="truncate text-base font-medium text-white">
                           {b.inviteeName}
                         </p>
-                        <p className="flex items-center gap-1.5 text-xs text-text-muted">
+                        <p className="flex items-center gap-1.5 text-sm text-text-muted">
                           <span
                             className="inline-block h-1.5 w-1.5 rounded-full"
                             style={{ background: color }}
@@ -347,7 +347,7 @@ export default async function DashboardPage() {
 
                       {/* Time + join */}
                       <div className="text-right">
-                        <p className="text-xs font-medium text-accent">
+                        <p className="text-sm font-medium text-accent">
                           {fmtTime(b.startTime)}
                         </p>
                         {b.location && (
@@ -355,7 +355,7 @@ export default async function DashboardPage() {
                             href={b.location}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-0.5 flex items-center justify-end gap-1 text-[10px] text-text-muted transition-colors hover:text-white"
+                            className="mt-0.5 flex items-center justify-end gap-1 text-xs text-text-muted transition-colors hover:text-white"
                           >
                             Join <ExternalLink className="h-3 w-3" />
                           </a>
@@ -376,8 +376,8 @@ export default async function DashboardPage() {
             <Card>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm">Getting started</CardTitle>
-                  <span className="text-xs text-text-muted">
+                  <CardTitle className="text-base">Getting started</CardTitle>
+                  <span className="text-sm text-text-muted">
                     {checklistDone}/{checklist.length}
                   </span>
                 </div>
@@ -403,7 +403,7 @@ export default async function DashboardPage() {
                       <Circle className="h-4 w-4 shrink-0 text-border" />
                     )}
                     <span
-                      className={`text-xs leading-snug ${
+                      className={`text-sm leading-snug ${
                         done ? "text-text-muted line-through" : "text-white"
                       }`}
                     >
@@ -416,15 +416,15 @@ export default async function DashboardPage() {
           )}
 
           {/* Event types */}
-          <Card className="flex-1">
+          <Card>
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm">Event types</CardTitle>
+                <CardTitle className="text-base">Event types</CardTitle>
                 <Link href="/dashboard/event-types">
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-6 gap-1 px-2 text-[10px] text-text-muted hover:text-white"
+                    className="h-6 gap-1 px-2 text-xs text-text-muted hover:text-white"
                   >
                     Manage <ArrowRight className="h-3 w-3" />
                   </Button>
@@ -437,8 +437,8 @@ export default async function DashboardPage() {
                   href="/dashboard/event-types"
                   className="flex items-center gap-2 rounded-md border border-dashed border-border p-3 transition-colors hover:border-accent"
                 >
-                  <Plus className="h-4 w-4 text-text-muted" />
-                  <span className="text-xs text-text-muted">
+                  <Plus className="h-5 w-5 text-text-muted" />
+                  <span className="text-sm text-text-muted">
                     Create your first event type
                   </span>
                 </Link>
@@ -451,13 +451,13 @@ export default async function DashboardPage() {
                         className="flex items-center gap-2.5 rounded-md px-2 py-2 transition-colors hover:bg-bg-primary"
                       >
                         <div
-                          className="h-2 w-2 shrink-0 rounded-full"
+                          className="h-3 w-3 shrink-0 rounded-full"
                           style={{ background: et.color ?? "#D83F87" }}
                         />
-                        <span className="flex-1 truncate text-xs text-white">
+                        <span className="flex-1 truncate text-sm text-white">
                           {et.title}
                         </span>
-                        <span className="shrink-0 rounded bg-[#44318D] px-1.5 py-0.5 text-[10px] text-text-muted">
+                        <span className="shrink-0 rounded bg-[#44318D] px-2 py-0.5 text-xs text-text-muted">
                           {et.duration}m
                         </span>
                       </Link>
