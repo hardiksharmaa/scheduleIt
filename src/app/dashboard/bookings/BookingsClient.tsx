@@ -118,8 +118,8 @@ function BookingCard({ booking, onCancel }: {
     <div
       className="rounded-xl p-4 transition-colors"
       style={{
-        background: "#111",
-        border: "1px solid #1e1e1e",
+        background: "#2A1B3D",
+        border: "1px solid #44318D",
       }}
     >
       <div className="flex items-start justify-between gap-4">
@@ -139,7 +139,7 @@ function BookingCard({ booking, onCancel }: {
               {booking.eventType.teamName && (
                 <span
                   className="flex items-center gap-1 rounded px-2 py-0.5 text-xs font-semibold"
-                  style={{ background: "#c4956a22", color: "#c4956a", border: "1px solid #c4956a44" }}
+                  style={{ background: "#D83F8722", color: "#D83F87", border: "1px solid #D83F8744" }}
                 >
                   👥 {booking.eventType.teamName}
                 </span>
@@ -150,8 +150,8 @@ function BookingCard({ booking, onCancel }: {
             {/* Invitee */}
             <div className="flex items-center gap-1.5 mb-2">
               <User className="h-3.5 w-3.5 shrink-0" style={{ color: "#6a6a6a" }} />
-              <span className="text-sm" style={{ color: "#9a9a9a" }}>{booking.inviteeName}</span>
-              <span style={{ color: "#444" }}>·</span>
+              <span className="text-sm" style={{ color: "#A4B3B6" }}>{booking.inviteeName}</span>
+              <span style={{ color: "#A4B3B6" }}>·</span>
               <Mail className="h-3.5 w-3.5 shrink-0" style={{ color: "#6a6a6a" }} />
               <span className="text-xs truncate" style={{ color: "#6a6a6a" }}>{booking.inviteeEmail}</span>
             </div>
@@ -160,15 +160,15 @@ function BookingCard({ booking, onCancel }: {
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5 shrink-0" style={{ color: "#6a6a6a" }} />
-                <span className="text-xs" style={{ color: "#9a9a9a" }}>
+                <span className="text-xs" style={{ color: "#A4B3B6" }}>
                   {formatDate(booking.startTime, tz)}
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: "#6a6a6a" }} />
-                <span className="text-xs" style={{ color: "#9a9a9a" }}>
+                <span className="text-xs" style={{ color: "#A4B3B6" }}>
                   {formatTime(booking.startTime, tz)} – {formatTime(booking.endTime, tz)}
-                  <span className="ml-1" style={{ color: "#555" }}>({booking.eventType.duration} min)</span>
+                  <span className="ml-1" style={{ color: "#A4B3B6" }}>({booking.eventType.duration} min)</span>
                 </span>
               </div>
               {booking.location && (
@@ -180,12 +180,12 @@ function BookingCard({ booking, onCancel }: {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-xs hover:underline"
-                      style={{ color: "#c4956a" }}
+                      style={{ color: "#D83F87" }}
                     >
                       Join meeting <ExternalLink className="h-3 w-3" />
                     </a>
                   ) : (
-                    <span className="text-xs" style={{ color: "#9a9a9a" }}>{booking.location}</span>
+                    <span className="text-xs" style={{ color: "#A4B3B6" }}>{booking.location}</span>
                   )}
                 </div>
               )}
@@ -243,7 +243,7 @@ export default function BookingsClient({ upcoming, cancelled, completed, stats, 
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">Bookings</h1>
-        <p className="text-sm" style={{ color: "#9a9a9a" }}>
+        <p className="text-sm" style={{ color: "#A4B3B6" }}>
           View and manage your upcoming and past bookings.
         </p>
       </div>
@@ -251,17 +251,17 @@ export default function BookingsClient({ upcoming, cancelled, completed, stats, 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: "Total", value: stats.total, color: "#9a9a9a" },
-          { label: "Upcoming", value: stats.upcoming, color: "#c4956a" },
+          { label: "Total", value: stats.total, color: "#A4B3B6" },
+          { label: "Upcoming", value: stats.upcoming, color: "#D83F87" },
           { label: "Completed", value: stats.completed, color: "#4ade80" },
           { label: "Cancelled", value: stats.cancelled, color: "#f87171" },
         ].map((s) => (
           <div
             key={s.label}
             className="rounded-xl p-4"
-            style={{ background: "#111", border: "1px solid #1e1e1e" }}
+            style={{ background: "#2A1B3D", border: "1px solid #44318D" }}
           >
-            <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "#555" }}>
+            <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "#A4B3B6" }}>
               {s.label}
             </p>
             <p className="mt-1 text-2xl font-bold" style={{ color: s.color }}>
@@ -274,7 +274,7 @@ export default function BookingsClient({ upcoming, cancelled, completed, stats, 
       {/* Tabs */}
       <div
         className="flex gap-1 rounded-xl p-1"
-        style={{ background: "#111", border: "1px solid #1e1e1e", width: "fit-content" }}
+        style={{ background: "#2A1B3D", border: "1px solid #44318D", width: "fit-content" }}
       >
         {(["upcoming", "cancelled", "completed"] as const).map((tab) => (
           <button
@@ -283,7 +283,7 @@ export default function BookingsClient({ upcoming, cancelled, completed, stats, 
             className="rounded-lg px-4 py-1.5 text-sm font-medium capitalize transition-colors"
             style={
               view === tab
-                ? { background: "#1e1e1e", color: "#fff" }
+                ? { background: "#44318D", color: "#fff" }
                 : { color: "#6a6a6a" }
             }
           >
@@ -300,14 +300,14 @@ export default function BookingsClient({ upcoming, cancelled, completed, stats, 
       {displayed.length === 0 ? (
         <div
           className="flex flex-col items-center justify-center rounded-xl py-20"
-          style={{ background: "#111", border: "1px solid #1e1e1e" }}
+          style={{ background: "#2A1B3D", border: "1px solid #44318D" }}
         >
-          <Calendar className="mb-3 h-10 w-10" style={{ color: "#333" }} />
-          <p className="text-sm font-medium" style={{ color: "#555" }}>
+          <Calendar className="mb-3 h-10 w-10" style={{ color: "#A4B3B6" }} />
+          <p className="text-sm font-medium" style={{ color: "#A4B3B6" }}>
             {view === "upcoming" ? "No upcoming bookings" : view === "cancelled" ? "No cancelled bookings" : "No completed bookings yet"}
           </p>
           {view === "upcoming" && (
-            <p className="mt-1 text-xs" style={{ color: "#444" }}>
+            <p className="mt-1 text-xs" style={{ color: "#A4B3B6" }}>
               Share your booking link to start receiving bookings.
             </p>
           )}

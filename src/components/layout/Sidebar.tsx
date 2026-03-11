@@ -51,14 +51,12 @@ export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-60 flex-col border-r border-[#2e2e2e] bg-[#181818]">
-      {/* Logo */}
-      <div className="flex h-16 items-center border-b border-[#2e2e2e] px-6">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#c4956a]">
-            <Calendar className="h-4 w-4 text-[#ffffff]" />
-          </div>
-          <span className="text-lg font-bold text-[#ffffff]">ScheduleIt</span>
+    <aside className="flex h-screen w-60 flex-col border-r border-border bg-bg-secondary">
+      <div className="flex h-16 items-center px-6">
+        <Link href="/" className="flex items-center">
+          <span className="text-base font-serif font-bold tracking-[0.1em] text-text-light uppercase">
+            ScheduleIt
+          </span>
         </Link>
       </div>
 
@@ -76,8 +74,8 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
                 isActive
-                  ? "bg-[#c4956a] text-[#ffffff]"
-                  : "text-[#9a9a9a] hover:bg-[#0c0c0c] hover:text-[#ffffff]"
+                  ? "bg-accent text-text-light"
+                  : "text-text-muted hover:bg-bg-primary hover:text-text-light"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
@@ -88,7 +86,7 @@ export function Sidebar({ user }: SidebarProps) {
       </nav>
 
       {/* User footer */}
-      <div className="border-t border-[#2e2e2e] px-4 py-4">
+      <div className="border-t border-border px-4 py-4">
         <div className="flex items-center gap-3 rounded-lg px-3 py-2">
           {/* Avatar */}
           {user?.image ? (
@@ -109,22 +107,22 @@ export function Sidebar({ user }: SidebarProps) {
               />
             )
           ) : (
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#c4956a] text-xs font-semibold text-[#ffffff]">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-text-light">
               <Initials name={user?.name ?? "U"} />
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-[#ffffff]">
+            <p className="truncate text-sm font-medium text-text-light">
               {user?.name ?? "User"}
             </p>
-            <p className="truncate text-xs text-[#9a9a9a]">
+            <p className="truncate text-xs text-text-muted">
               {user?.email ?? ""}
             </p>
           </div>
           <button
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={() => signOut({ callbackUrl: "/" })}
             title="Sign out"
-            className="text-[#9a9a9a] transition-colors hover:text-[#ffffff]"
+            className="text-text-muted transition-colors hover:text-text-light"
           >
             <LogOut className="h-4 w-4" />
           </button>

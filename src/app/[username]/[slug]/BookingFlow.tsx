@@ -91,7 +91,7 @@ function StepDots({ current }: { current: Step }) {
             style={{
               height: 2,
               borderRadius: 999,
-              background: i <= idx ? "#c4956a" : "#2a2a2a",
+              background: i <= idx ? "#D83F87" : "#44318D",
               width: i === idx ? 20 : 10,
               transition: "width 0.2s, background 0.2s",
             }}
@@ -100,7 +100,7 @@ function StepDots({ current }: { current: Step }) {
             style={{
               fontSize: 11,
               fontWeight: i === idx ? 600 : 400,
-              color: i === idx ? "#c4956a" : i < idx ? "#555" : "#333",
+              color: i === idx ? "#D83F87" : i < idx ? "#A4B3B6" : "#A4B3B6",
               transition: "color 0.2s",
             }}
           >
@@ -335,8 +335,8 @@ export default function BookingFlow({
             <button
               onClick={goToPrevMonth}
               disabled={!canGoToPrevMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#1e1e1e] disabled:pointer-events-none disabled:opacity-20"
-              style={{ color: "#9a9a9a" }}
+              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#44318D] disabled:pointer-events-none disabled:opacity-20"
+              style={{ color: "#A4B3B6" }}
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -346,8 +346,8 @@ export default function BookingFlow({
             <button
               onClick={goToNextMonth}
               disabled={!canGoToNextMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#1e1e1e] disabled:pointer-events-none disabled:opacity-20"
-              style={{ color: "#9a9a9a" }}
+              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#44318D] disabled:pointer-events-none disabled:opacity-20"
+              style={{ color: "#A4B3B6" }}
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -359,7 +359,7 @@ export default function BookingFlow({
               <div
                 key={i}
                 style={{ textAlign: "center", fontSize: 10, fontWeight: 600,
-                  letterSpacing: "0.1em", color: "#444", padding: "0 0 6px" }}
+                  letterSpacing: "0.1em", color: "#A4B3B6", padding: "0 0 6px" }}
               >
                 {d}
               </div>
@@ -379,9 +379,9 @@ export default function BookingFlow({
               const isToday = viewYear === today.year && viewMonth === today.month && day === today.day;
               const isSelected = dateStr === selectedDate;
 
-              const bg = isSelected ? "#c4956a" : "transparent";
-              const fg = disabled ? "#2e2e2e" : isSelected ? "#fff" : isToday ? "#fff" : "#aaa";
-              const ring = isToday && !isSelected ? "inset 0 0 0 1px #c4956a44" : "none";
+              const bg = isSelected ? "#D83F87" : "transparent";
+              const fg = disabled ? "#44318D" : isSelected ? "#fff" : isToday ? "#fff" : "#A4B3B6";
+              const ring = isToday && !isSelected ? "inset 0 0 0 1px #D83F8744" : "none";
 
               return (
                 <button
@@ -406,7 +406,7 @@ export default function BookingFlow({
                   }}
                   onMouseEnter={(e) => {
                     if (!disabled && !isSelected)
-                      e.currentTarget.style.background = "#1c1c1c";
+                      e.currentTarget.style.background = "#44318D";
                   }}
                   onMouseLeave={(e) => {
                     if (!disabled && !isSelected)
@@ -419,7 +419,7 @@ export default function BookingFlow({
             })}
           </div>
 
-          <div className="mt-5 flex items-center gap-1.5 text-xs" style={{ color: "#444" }}>
+          <div className="mt-5 flex items-center gap-1.5 text-xs" style={{ color: "#A4B3B6" }}>
             <Globe className="h-3 w-3" />
             <span>{timezone}</span>
           </div>
@@ -432,7 +432,7 @@ export default function BookingFlow({
           <button
             onClick={() => setStep("calendar")}
             className="mb-5 flex items-center gap-1.5 text-xs transition-colors hover:text-white"
-            style={{ color: "#9a9a9a" }}
+            style={{ color: "#A4B3B6" }}
           >
             <ChevronLeft className="h-3.5 w-3.5" />
             {selectedDate ? formatDateLong(selectedDate) : "Back"}
@@ -440,7 +440,7 @@ export default function BookingFlow({
 
           {slotsLoading ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="h-5 w-5 animate-spin" style={{ color: "#c4956a" }} />
+              <Loader2 className="h-5 w-5 animate-spin" style={{ color: "#D83F87" }} />
             </div>
           ) : slotsError ? (
             <div className="rounded-xl p-5 text-center" style={{ border: "1px solid #3a1a1a", background: "#1a0a0a" }}>
@@ -448,20 +448,20 @@ export default function BookingFlow({
               <button
                 onClick={() => selectedDate && fetchSlots(selectedDate)}
                 className="mt-3 rounded-lg px-4 py-2 text-xs text-white transition-colors"
-                style={{ background: "#2e2e2e" }}
+                style={{ background: "#44318D" }}
               >
                 Try again
               </button>
             </div>
           ) : slots.length === 0 ? (
             <div className="py-12 text-center">
-              <Clock className="mx-auto mb-3 h-7 w-7" style={{ color: "#2e2e2e" }} />
+              <Clock className="mx-auto mb-3 h-7 w-7" style={{ color: "#44318D" }} />
               <p className="text-sm font-medium text-white">No available times</p>
-              <p className="mt-1 text-xs" style={{ color: "#555" }}>Try a different date</p>
+              <p className="mt-1 text-xs" style={{ color: "#A4B3B6" }}>Try a different date</p>
               <button
                 onClick={() => setStep("calendar")}
                 className="mt-5 rounded-xl px-5 py-2.5 text-sm transition-colors hover:text-white"
-                style={{ border: "1px solid #2e2e2e", color: "#9a9a9a" }}
+                style={{ border: "1px solid #44318D", color: "#A4B3B6" }}
               >
                 Pick another date
               </button>
@@ -473,13 +473,13 @@ export default function BookingFlow({
                   key={slot.start}
                   onClick={() => handleSlotSelect(slot)}
                   className="group w-full rounded-xl px-5 py-3.5 text-left transition-all"
-                  style={{ border: "1px solid #2a2a2a", background: "transparent" }}
+                  style={{ border: "1px solid #44318D", background: "transparent" }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "#c4956a55";
-                    e.currentTarget.style.background = "#c4956a0d";
+                    e.currentTarget.style.borderColor = "#D83F8755";
+                    e.currentTarget.style.background = "#D83F870d";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "#2a2a2a";
+                    e.currentTarget.style.borderColor = "#44318D";
                     e.currentTarget.style.background = "transparent";
                   }}
                 >
@@ -492,7 +492,7 @@ export default function BookingFlow({
           )}
 
           {!slotsLoading && !slotsError && slots.length > 0 && (
-            <div className="mt-5 flex items-center gap-1.5 text-xs" style={{ color: "#444" }}>
+            <div className="mt-5 flex items-center gap-1.5 text-xs" style={{ color: "#A4B3B6" }}>
               <Globe className="h-3 w-3" />
               <span>{timezone}</span>
             </div>
@@ -506,7 +506,7 @@ export default function BookingFlow({
           <button
             onClick={() => setStep("slots")}
             className="mb-5 flex items-center gap-1.5 text-xs transition-colors hover:text-white"
-            style={{ color: "#9a9a9a" }}
+            style={{ color: "#A4B3B6" }}
           >
             <ChevronLeft className="h-3.5 w-3.5" />
             {selectedSlot
@@ -524,10 +524,10 @@ export default function BookingFlow({
               <div key={key}>
                 <label
                   className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
-                  style={{ color: "#555" }}
+                  style={{ color: "#A4B3B6" }}
                 >
                   {label}{" "}
-                  {required && <span style={{ color: "#c4956a" }}>*</span>}
+                  {required && <span style={{ color: "#D83F87" }}>*</span>}
                 </label>
                 <input
                   type={type}
@@ -538,11 +538,11 @@ export default function BookingFlow({
                   placeholder={placeholder}
                   className="w-full rounded-xl px-4 py-3 text-sm text-white outline-none transition-colors"
                   style={{
-                    border: "1px solid #2a2a2a",
+                    border: "1px solid #44318D",
                     background: "transparent",
                   }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "#2a2a2a")}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#44318D")}
                 />
               </div>
             ))}
@@ -550,10 +550,10 @@ export default function BookingFlow({
             <div>
               <label
                 className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
-                style={{ color: "#555" }}
+                style={{ color: "#A4B3B6" }}
               >
                 Notes{" "}
-                <span className="normal-case font-normal" style={{ color: "#333" }}>(optional)</span>
+                <span className="normal-case font-normal" style={{ color: "#A4B3B6" }}>(optional)</span>
               </label>
               <textarea
                 rows={3}
@@ -561,9 +561,9 @@ export default function BookingFlow({
                 onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                 placeholder="Anything you’d like to share beforehand?"
                 className="w-full resize-none rounded-xl px-4 py-3 text-sm text-white outline-none transition-colors"
-                style={{ border: "1px solid #2a2a2a", background: "transparent" }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "#2a2a2a")}
+                style={{ border: "1px solid #44318D", background: "transparent" }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "#44318D")}
               />
             </div>
 
@@ -580,7 +580,7 @@ export default function BookingFlow({
               type="submit"
               disabled={submitting}
               className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-              style={{ background: "#c4956a" }}
+              style={{ background: "#D83F87" }}
             >
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
               Confirm booking
@@ -595,40 +595,40 @@ export default function BookingFlow({
           <div className="mb-6 flex items-start gap-3.5">
             <div
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-              style={{ background: "#c4956a18", boxShadow: "inset 0 0 0 1px #c4956a33" }}
+              style={{ background: "#D83F8718", boxShadow: "inset 0 0 0 1px #D83F8733" }}
             >
-              <Check className="h-4 w-4" style={{ color: "#c4956a" }} />
+              <Check className="h-4 w-4" style={{ color: "#D83F87" }} />
             </div>
             <div className="pt-0.5">
               <p className="text-base font-bold text-white">You&apos;re booked!</p>
-              <p className="mt-0.5 text-xs" style={{ color: "#555" }}>
+              <p className="mt-0.5 text-xs" style={{ color: "#A4B3B6" }}>
                 Confirmation sent to{" "}
-                <span style={{ color: "#9a9a9a" }}>{form.email}</span>
+                <span style={{ color: "#A4B3B6" }}>{form.email}</span>
               </p>
             </div>
           </div>
 
           <div
             className="rounded-xl p-5"
-            style={{ border: "1px solid #1e1e1e" }}
+            style={{ border: "1px solid #44318D" }}
           >
             <p className="text-sm font-semibold text-white">{eventTitle}</p>
-            <p className="mt-0.5 text-xs" style={{ color: "#555" }}>
-              with{" "}<span style={{ color: "#c4956a" }}>{hostName}</span>
+            <p className="mt-0.5 text-xs" style={{ color: "#A4B3B6" }}>
+              with{" "}<span style={{ color: "#D83F87" }}>{hostName}</span>
             </p>
 
-            <div className="mt-4 space-y-2.5" style={{ borderTop: "1px solid #1e1e1e", paddingTop: 16 }}>
-              <div className="flex items-center gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                <Calendar className="h-3.5 w-3.5 shrink-0" style={{ color: "#c4956a" }} />
+            <div className="mt-4 space-y-2.5" style={{ borderTop: "1px solid #44318D", paddingTop: 16 }}>
+              <div className="flex items-center gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                <Calendar className="h-3.5 w-3.5 shrink-0" style={{ color: "#D83F87" }} />
                 {selectedDate ? formatDateLong(selectedDate) : ""}
               </div>
-              <div className="flex items-center gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: "#c4956a" }} />
+              <div className="flex items-center gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: "#D83F87" }} />
                 {formatTime(confirmation.startTime, timezone)}{" – "}
                 {formatTime(confirmation.endTime, timezone)}
               </div>
-              <div className="flex items-center gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                <Globe className="h-3.5 w-3.5 shrink-0" style={{ color: "#c4956a" }} />
+              <div className="flex items-center gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                <Globe className="h-3.5 w-3.5 shrink-0" style={{ color: "#D83F87" }} />
                 {timezone}
               </div>
             </div>
@@ -639,7 +639,7 @@ export default function BookingFlow({
             href={`/api/bookings/${confirmation.bookingId}/ics`}
             download="meeting.ics"
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-medium transition-colors hover:opacity-80"
-            style={{ background: "#1a1a1a", border: "1px solid #1e1e1e", color: "#c4956a" }}
+            style={{ background: "#2A1B3D", border: "1px solid #44318D", color: "#D83F87" }}
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />

@@ -1,14 +1,14 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        "rounded-xl border border-[#2e2e2e] bg-[#181818] shadow-sm",
+        "rounded-lg border border-border bg-bg-secondary shadow-lg transition-all duration-300 hover:shadow-(--shadow-premium) hover:border-accent-secondary",
         className
       )}
       {...props}
@@ -35,7 +35,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight text-[#ffffff]",
+      "text-xl font-bold leading-none tracking-tight text-text-light font-heading",
       className
     )}
     {...props}
@@ -49,7 +49,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-[#9a9a9a]", className)}
+    className={cn("text-sm font-medium text-text-muted", className)}
     {...props}
   />
 ));
@@ -57,7 +57,7 @@ CardDescription.displayName = "CardDescription";
 
 const CardContent = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+    <div ref={ref} className={cn("p-6 pt-0 text-text-light", className)} {...props} />
   )
 );
 CardContent.displayName = "CardContent";

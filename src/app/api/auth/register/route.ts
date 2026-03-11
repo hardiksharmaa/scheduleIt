@@ -35,6 +35,14 @@ export async function POST(req: NextRequest) {
         name: name ?? null,
         email,
         password: hashed,
+        availability: {
+          create: [0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => ({
+            dayOfWeek,
+            isActive: true, // all 7 days active by default
+            startTime: "09:00",
+            endTime: "17:00",
+          })),
+        },
       },
     });
 

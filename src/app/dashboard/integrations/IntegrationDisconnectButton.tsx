@@ -31,7 +31,7 @@ export function IntegrationDisconnectButton({ apiPath, label = "Disconnect" }: P
         borderRadius: 6,
         border:       "1px solid #3a3a3a",
         background:   "transparent",
-        color:        "#9a9a9a",
+        color:        "#A4B3B6",
         fontSize:     13,
         cursor:       loading ? "not-allowed" : "pointer",
         opacity:      loading ? 0.6 : 1,
@@ -43,7 +43,7 @@ export function IntegrationDisconnectButton({ apiPath, label = "Disconnect" }: P
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = "#3a3a3a";
-        e.currentTarget.style.color       = "#9a9a9a";
+        e.currentTarget.style.color       = "#A4B3B6";
       }}
     >
       {loading ? "Disconnecting…" : label}

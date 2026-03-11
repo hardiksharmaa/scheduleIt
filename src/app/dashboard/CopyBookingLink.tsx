@@ -29,13 +29,13 @@ export default function CopyBookingLink({ url }: { url: string }) {
     <Button
       variant="outline"
       size="sm"
-      className="gap-2 border-[#2e2e2e] text-[#9a9a9a] hover:border-[#c4956a] hover:text-white"
+      className="gap-2 border-border text-text-muted hover:border-accent hover:text-white"
       onClick={handleCopy}
     >
       {copied ? (
         <>
-          <Check className="h-3.5 w-3.5 text-[#c4956a]" />
-          <span className="text-[#c4956a]">Copied!</span>
+          <Check className="h-3.5 w-3.5 text-accent" />
+          <span className="text-accent">Copied!</span>
         </>
       ) : (
         <>

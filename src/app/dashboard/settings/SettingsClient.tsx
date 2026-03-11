@@ -6,6 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Loader2, Check, X, ExternalLink, Upload, Trash2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { toast } from "react-toastify";
 
 // ─── Timezone list ─────────────────────────────────────────────────────────────
 const TIMEZONES = [
@@ -146,7 +147,7 @@ function AvatarDisplay({
 
   return (
     <div
-      className="flex items-center justify-center rounded-full bg-[#c4956a] font-bold text-white"
+      className="flex items-center justify-center rounded-full bg-accent font-bold text-white"
       style={{ width: size, height: size, fontSize: size * 0.35 }}
     >
       {initials}
@@ -160,7 +161,6 @@ export default function SettingsClient() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
   // Form fields
@@ -276,7 +276,6 @@ export default function SettingsClient() {
 
     setSaving(true);
     setSaveError(null);
-    setSaveSuccess(false);
 
     const body: Record<string, unknown> = {
       name: name || undefined,
@@ -334,8 +333,7 @@ export default function SettingsClient() {
             : prev
         );
         setPendingPicture(null);
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
+        toast.success("Profile saved successfully!");
       }
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : "Network error. Please check your connection.");
@@ -361,7 +359,7 @@ export default function SettingsClient() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-[#c4956a]" />
+        <Loader2 className="h-6 w-6 animate-spin text-accent" />
       </div>
     );
   }
@@ -375,7 +373,7 @@ export default function SettingsClient() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">Settings</h1>
-        <p className="text-sm text-[#9a9a9a]">Manage your profile and public booking URL.</p>
+        <p className="text-sm text-text-muted">Manage your profile and public booking URL.</p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
@@ -427,13 +425,13 @@ export default function SettingsClient() {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploadingPic}
-                    className="text-xs text-[#c4956a] hover:underline disabled:opacity-50"
+                    className="text-xs text-accent hover:underline disabled:opacity-50"
                   >
                     {uploadingPic ? "Processing…" : "Upload photo"}
                   </button>
                   {(displayPicture || profile?.picture) && pendingPicture !== "CLEAR" && (
                     <>
-                      <span className="text-[#2e2e2e]">·</span>
+                      <span className="text-border">·</span>
                       <button
                         type="button"
                         onClick={handleRemovePicture}
@@ -444,7 +442,7 @@ export default function SettingsClient() {
                     </>
                   )}
                 </div>
-                <p className="text-xs text-[#9a9a9a]">
+                <p className="text-xs text-text-muted">
                   JPG, PNG or GIF — resized to 300×300. Stored in DB, never in your session token.
                 </p>
               </div>
@@ -452,7 +450,7 @@ export default function SettingsClient() {
 
             {/* Display name */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">
+              <label className="mb-1.5 block text-sm font-medium text-text-muted">
                 Display name
               </label>
               <input
@@ -461,20 +459,20 @@ export default function SettingsClient() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Jane Doe"
                 maxLength={100}
-                className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-4 py-2.5 text-sm text-white placeholder:text-[#9a9a9a] outline-none focus:border-[#c4956a] transition-colors"
+                className="w-full rounded-lg border border-border bg-bg-primary px-4 py-2.5 text-sm text-white placeholder:text-text-muted outline-none focus:border-accent transition-colors"
               />
             </div>
 
             {/* Email (read-only) */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">Email</label>
+              <label className="mb-1.5 block text-sm font-medium text-text-muted">Email</label>
               <input
                 type="email"
                 value={profile?.email ?? session?.user?.email ?? ""}
                 readOnly
-                className="w-full cursor-not-allowed rounded-lg border border-[#2e2e2e] bg-[#181818] px-4 py-2.5 text-sm text-[#9a9a9a] outline-none"
+                className="w-full cursor-not-allowed rounded-lg border border-border bg-bg-secondary px-4 py-2.5 text-sm text-text-muted outline-none"
               />
-              <p className="mt-1 text-xs text-[#9a9a9a]">Email cannot be changed.</p>
+              <p className="mt-1 text-xs text-text-muted">Email cannot be changed.</p>
             </div>
           </CardContent>
         </Card>
@@ -485,14 +483,14 @@ export default function SettingsClient() {
             <CardTitle>Your booking URL</CardTitle>
             <CardDescription>
               Your public page will be at{" "}
-              <span className="text-[#c4956a]">scheduleit.com/{"{username}"}</span>.
+              <span className="text-accent">scheduleit.com/{"{username}"}</span>.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">Username</label>
+              <label className="mb-1.5 block text-sm font-medium text-text-muted">Username</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 select-none text-sm text-[#9a9a9a]">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 select-none text-sm text-text-muted">
                   scheduleit.com/
                 </span>
                 <input
@@ -501,10 +499,10 @@ export default function SettingsClient() {
                   onChange={(e) => handleUsernameChange(e.target.value)}
                   placeholder="yourname"
                   maxLength={40}
-                  className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] py-2.5 pl-[138px] pr-10 text-sm text-white placeholder:text-[#9a9a9a] outline-none focus:border-[#c4956a] transition-colors"
+                  className="w-full rounded-lg border border-border bg-bg-primary py-2.5 pl-[138px] pr-10 text-sm text-white placeholder:text-text-muted outline-none focus:border-accent transition-colors"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  {usernameStatus === "checking" && <Loader2 className="h-4 w-4 animate-spin text-[#9a9a9a]" />}
+                  {usernameStatus === "checking" && <Loader2 className="h-4 w-4 animate-spin text-text-muted" />}
                   {usernameStatus === "available" && <Check className="h-4 w-4 text-green-400" />}
                   {(usernameStatus === "taken" || usernameStatus === "invalid") && (
                     <X className="h-4 w-4 text-red-400" />
@@ -529,7 +527,7 @@ export default function SettingsClient() {
                 href={publicUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-[#c4956a] hover:underline"
+                className="inline-flex items-center gap-2 text-sm text-accent hover:underline"
               >
                 {publicUrl}
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -547,11 +545,11 @@ export default function SettingsClient() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">Timezone</label>
+            <label className="mb-1.5 block text-sm font-medium text-text-muted">Timezone</label>
             <select
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-4 py-2.5 text-sm text-white outline-none focus:border-[#c4956a] transition-colors"
+              className="w-full rounded-lg border border-border bg-bg-primary px-4 py-2.5 text-sm text-white outline-none focus:border-accent transition-colors"
             >
               {TIMEZONES.map((tz) => (
                 <option key={tz.value} value={tz.value}>
@@ -559,7 +557,7 @@ export default function SettingsClient() {
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-[#9a9a9a]">
+            <p className="mt-1 text-xs text-text-muted">
               Now:{" "}
               {new Date().toLocaleTimeString("en-US", {
                 timeZone: timezone,
@@ -573,11 +571,6 @@ export default function SettingsClient() {
         {saveError && (
           <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
             {saveError}
-          </div>
-        )}
-        {saveSuccess && (
-          <div className="rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400">
-            Profile saved successfully!
           </div>
         )}
 
@@ -610,7 +603,7 @@ export default function SettingsClient() {
             <div className="flex items-center justify-between rounded-lg border border-red-500/20 bg-red-500/5 px-5 py-4">
               <div>
                 <p className="text-sm font-medium text-white">Delete account</p>
-                <p className="mt-0.5 text-xs text-[#9a9a9a]">
+                <p className="mt-0.5 text-xs text-text-muted">
                   Permanently deletes your account, event types, bookings and all data. Cannot be undone.
                 </p>
               </div>
@@ -633,7 +626,7 @@ export default function SettingsClient() {
                   <p className="text-sm font-semibold text-red-400">
                     This will permanently delete your account.
                   </p>
-                  <p className="mt-1 text-xs text-[#9a9a9a]">
+                  <p className="mt-1 text-xs text-text-muted">
                     All your event types, bookings, availability settings and integrations will be
                     removed. This action <strong className="text-white">cannot be undone</strong>.
                   </p>
@@ -641,9 +634,9 @@ export default function SettingsClient() {
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-[#9a9a9a]">
+                <label className="mb-1.5 block text-xs font-medium text-text-muted">
                   Type{" "}
-                  <span className="rounded bg-[#2e2e2e] px-1 py-0.5 font-mono text-white">
+                  <span className="rounded bg-border px-1 py-0.5 font-mono text-white">
                     delete my account
                   </span>{" "}
                   to confirm
@@ -653,7 +646,7 @@ export default function SettingsClient() {
                   value={deleteInput}
                   onChange={(e) => setDeleteInput(e.target.value)}
                   placeholder="delete my account"
-                  className="w-full rounded-lg border border-red-500/30 bg-[#0c0c0c] px-4 py-2.5 text-sm text-white placeholder:text-[#9a9a9a] outline-none focus:border-red-500 transition-colors"
+                  className="w-full rounded-lg border border-red-500/30 bg-bg-primary px-4 py-2.5 text-sm text-white placeholder:text-text-muted outline-none focus:border-red-500 transition-colors"
                 />
               </div>
 
@@ -671,7 +664,7 @@ export default function SettingsClient() {
                 <button
                   type="button"
                   onClick={() => { setShowDeleteConfirm(false); setDeleteInput(""); }}
-                  className="text-sm text-[#9a9a9a] hover:text-white transition-colors"
+                  className="text-sm text-text-muted hover:text-white transition-colors"
                 >
                   Cancel
                 </button>

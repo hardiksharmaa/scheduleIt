@@ -33,10 +33,10 @@ function kindBadge(kind: string) {
   const map: Record<string, { label: string; color: string }> = {
     ROUND_ROBIN: { label: "Round robin", color: "#2d6a9f" },
     COLLECTIVE:  { label: "Collective",  color: "#5c6e2d" },
-    ONE_ON_ONE:  { label: "1-on-1",      color: "#555"    },
+    ONE_ON_ONE:  { label: "1-on-1",      color: "#A4B3B6"    },
     GROUP:       { label: "Group",       color: "#7a4d2a" },
   };
-  const meta = map[kind] ?? { label: kind, color: "#555" };
+  const meta = map[kind] ?? { label: kind, color: "#A4B3B6" };
   return (
     <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 999, background: meta.color + "33", color: meta.color, border: `1px solid ${meta.color}55`, textTransform: "uppercase", letterSpacing: "0.04em" }}>
       {meta.label}
@@ -54,10 +54,10 @@ function MemberAvatar({ user, size = 30 }: { user: TeamUser; size?: number }) {
   const initials = (user.name ?? user.email ?? "?").trim().split(" ").map((p) => p[0]).slice(0,2).join("").toUpperCase();
   if (user.image) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={user.image} alt={user.name ?? ""} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: "1px solid #2a2a2a" }} />;
+    return <img src={user.image} alt={user.name ?? ""} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: "1px solid #44318D" }} />;
   }
   return (
-    <div style={{ width: size, height: size, borderRadius: "50%", background: "#c4956a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.35, fontWeight: 600, color: "#fff", border: "1px solid #2a2a2a" }}>
+    <div style={{ width: size, height: size, borderRadius: "50%", background: "#D83F87", display: "flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.35, fontWeight: 600, color: "#fff", border: "1px solid #44318D" }}>
       {initials}
     </div>
   );
@@ -74,8 +74,8 @@ function CopyButton({ text }: { text: string }) {
   };
   return (
     <button onClick={handleCopy} title="Copy link"
-      className="flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors hover:bg-[#2a2a2a]"
-      style={{ color: copied ? "#4ade80" : "#9a9a9a" }}>
+      className="flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors hover:bg-[#44318D]"
+      style={{ color: copied ? "#4ade80" : "#A4B3B6" }}>
       {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
       {copied ? "Copied" : "Copy"}
     </button>
@@ -232,53 +232,53 @@ export default function TeamsClient({
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white">Teams</h1>
-            <p className="mt-1 text-sm" style={{ color: "#9a9a9a" }}>
+            <p className="mt-1 text-sm" style={{ color: "#A4B3B6" }}>
               Create teams for round-robin or collective bookings.
             </p>
           </div>
           <button onClick={() => setShowCreate(true)}
             className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-white transition-colors hover:opacity-90"
-            style={{ background: "#c4956a" }}>
+            style={{ background: "#D83F87" }}>
             <Plus className="h-4 w-4" /> New team
           </button>
         </div>
 
         {/* Create team form */}
         {showCreate && (
-          <div className="rounded-2xl p-6" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+          <div className="rounded-2xl p-6" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
             <h2 className="mb-4 text-base font-semibold text-white">Create a team</h2>
             <form onSubmit={handleCreateTeam} className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>
-                  Team name <span style={{ color: "#c4956a" }}>*</span>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>
+                  Team name <span style={{ color: "#D83F87" }}>*</span>
                 </label>
                 <input required value={createForm.name} onChange={(e) => setCreateForm((f) => ({ ...f, name: e.target.value }))}
                   placeholder="Engineering team" autoFocus
                   className="w-full rounded-xl px-4 py-3 text-sm text-white outline-none"
-                  style={{ border: "1px solid #2a2a2a", background: "transparent" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                  onBlur={(e)  => (e.currentTarget.style.borderColor = "#2a2a2a")} />
+                  style={{ border: "1px solid #44318D", background: "transparent" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                  onBlur={(e)  => (e.currentTarget.style.borderColor = "#44318D")} />
               </div>
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>
-                  Description <span className="normal-case font-normal" style={{ color: "#333" }}>(optional)</span>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>
+                  Description <span className="normal-case font-normal" style={{ color: "#A4B3B6" }}>(optional)</span>
                 </label>
                 <input value={createForm.description} onChange={(e) => setCreateForm((f) => ({ ...f, description: e.target.value }))}
                   placeholder="Book with our team"
                   className="w-full rounded-xl px-4 py-3 text-sm text-white outline-none"
-                  style={{ border: "1px solid #2a2a2a", background: "transparent" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                  onBlur={(e)  => (e.currentTarget.style.borderColor = "#2a2a2a")} />
+                  style={{ border: "1px solid #44318D", background: "transparent" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                  onBlur={(e)  => (e.currentTarget.style.borderColor = "#44318D")} />
               </div>
               {createError && <p className="text-sm" style={{ color: "#f87171" }}>{createError}</p>}
               <div className="flex gap-3">
                 <button type="submit" disabled={creating}
                   className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
-                  style={{ background: "#c4956a" }}>
+                  style={{ background: "#D83F87" }}>
                   {creating && <Loader2 className="h-3.5 w-3.5 animate-spin" />} Create
                 </button>
                 <button type="button" onClick={() => { setShowCreate(false); setCreateError(null); }}
-                  className="rounded-xl px-5 py-2.5 text-sm" style={{ border: "1px solid #2a2a2a", color: "#9a9a9a" }}>
+                  className="rounded-xl px-5 py-2.5 text-sm" style={{ border: "1px solid #44318D", color: "#A4B3B6" }}>
                   Cancel
                 </button>
               </div>
@@ -289,32 +289,32 @@ export default function TeamsClient({
         {/* Teams list */}
         {teams.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-2xl py-20"
-            style={{ background: "#111", border: "1px solid #1e1e1e" }}>
-            <Users className="mb-3 h-10 w-10" style={{ color: "#333" }} />
-            <p className="text-sm font-medium" style={{ color: "#555" }}>No teams yet</p>
-            <p className="mt-1 text-xs" style={{ color: "#444" }}>Create a team to enable round-robin or collective bookings.</p>
+            style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
+            <Users className="mb-3 h-10 w-10" style={{ color: "#A4B3B6" }} />
+            <p className="text-sm font-medium" style={{ color: "#A4B3B6" }}>No teams yet</p>
+            <p className="mt-1 text-xs" style={{ color: "#A4B3B6" }}>Create a team to enable round-robin or collective bookings.</p>
           </div>
         ) : (
           <div className="space-y-3">
             {teams.map((team) => (
               <button key={team.id} onClick={() => openTeam(team)}
                 className="w-full rounded-xl p-5 text-left transition-colors hover:bg-[#161616]"
-                style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+                style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                      style={{ background: "#1a1a1a", border: "1px solid #2a2a2a" }}>
-                      <Users className="h-5 w-5" style={{ color: "#c4956a" }} />
+                      style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
+                      <Users className="h-5 w-5" style={{ color: "#D83F87" }} />
                     </div>
                     <div>
                       <p className="font-semibold text-white">{team.name}</p>
-                      {team.description && <p className="mt-0.5 text-sm" style={{ color: "#9a9a9a" }}>{team.description}</p>}
-                      <div className="mt-2 flex items-center gap-3 text-xs" style={{ color: "#555" }}>
+                      {team.description && <p className="mt-0.5 text-sm" style={{ color: "#A4B3B6" }}>{team.description}</p>}
+                      <div className="mt-2 flex items-center gap-3 text-xs" style={{ color: "#A4B3B6" }}>
                         <span>{team.members.length} member{team.members.length !== 1 ? "s" : ""}</span>
                         <span>·</span>
                         <span>{team.eventTypes.length} event type{team.eventTypes.length !== 1 ? "s" : ""}</span>
                         {team.myRole === "OWNER" && (
-                          <><span>·</span><span style={{ color: "#c4956a" }}>Owner</span></>
+                          <><span>·</span><span style={{ color: "#D83F87" }}>Owner</span></>
                         )}
                       </div>
                     </div>
@@ -349,12 +349,12 @@ export default function TeamsClient({
       <div className="flex items-start justify-between gap-4">
         <div>
           <button onClick={() => { setView("list"); setShowNewEvent(false); setAddEmail(""); setAddMemberError(null); }}
-            className="mb-3 flex items-center gap-1 text-xs transition-colors hover:text-white" style={{ color: "#9a9a9a" }}>
+            className="mb-3 flex items-center gap-1 text-xs transition-colors hover:text-white" style={{ color: "#A4B3B6" }}>
             <ChevronLeft className="h-3.5 w-3.5" /> All teams
           </button>
           <h1 className="text-xl font-bold text-white">{selectedTeam.name}</h1>
-          {selectedTeam.description && <p className="mt-0.5 text-sm" style={{ color: "#9a9a9a" }}>{selectedTeam.description}</p>}
-          <p className="mt-1 text-xs" style={{ color: "#444" }}>scheduleit.app/team/{selectedTeam.slug}</p>
+          {selectedTeam.description && <p className="mt-0.5 text-sm" style={{ color: "#A4B3B6" }}>{selectedTeam.description}</p>}
+          <p className="mt-1 text-xs" style={{ color: "#A4B3B6" }}>scheduleit.app/team/{selectedTeam.slug}</p>
         </div>
         {isOwner && (
           <button onClick={() => handleDeleteTeam(selectedTeam.id)}
@@ -366,27 +366,27 @@ export default function TeamsClient({
       </div>
 
       {/* Members */}
-      <section className="rounded-2xl" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
-        <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "#1e1e1e" }}>
+      <section className="rounded-2xl" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
+        <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "#44318D" }}>
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4" style={{ color: "#c4956a" }} />
+            <Users className="h-4 w-4" style={{ color: "#D83F87" }} />
             <span className="text-sm font-semibold text-white">Members</span>
-            <span className="text-xs" style={{ color: "#555" }}>{selectedTeam.members.length}</span>
+            <span className="text-xs" style={{ color: "#A4B3B6" }}>{selectedTeam.members.length}</span>
           </div>
         </div>
 
-        <div className="divide-y" style={{ borderColor: "#1a1a1a" }}>
+        <div className="divide-y" style={{ borderColor: "#2A1B3D" }}>
           {selectedTeam.members.map((m) => (
             <div key={m.userId} className="flex items-center justify-between gap-3 px-5 py-3.5">
               <div className="flex items-center gap-3">
                 <MemberAvatar user={m.user} size={32} />
                 <div>
                   <p className="text-sm font-medium text-white">{m.user.name ?? m.user.email}</p>
-                  {m.user.name && <p className="text-xs" style={{ color: "#555" }}>{m.user.email}</p>}
+                  {m.user.name && <p className="text-xs" style={{ color: "#A4B3B6" }}>{m.user.email}</p>}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span style={{ fontSize: 10, fontWeight: 600, color: m.role === "OWNER" ? "#c4956a" : "#555", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <span style={{ fontSize: 10, fontWeight: 600, color: m.role === "OWNER" ? "#D83F87" : "#A4B3B6", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   {m.role}
                 </span>
                 {isOwner && m.userId !== selectedTeam.ownerId && (
@@ -402,17 +402,17 @@ export default function TeamsClient({
 
         {/* Add member form (owner only) */}
         {isOwner && (
-          <div className="border-t px-5 py-4" style={{ borderColor: "#1e1e1e" }}>
+          <div className="border-t px-5 py-4" style={{ borderColor: "#44318D" }}>
             <form onSubmit={handleAddMember} className="flex items-center gap-2">
               <input type="email" required value={addEmail} onChange={(e) => setAddEmail(e.target.value)}
                 placeholder="Add member by email…"
                 className="flex-1 rounded-xl px-4 py-2.5 text-sm text-white outline-none"
-                style={{ border: "1px solid #2a2a2a", background: "transparent" }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                onBlur={(e)  => (e.currentTarget.style.borderColor = "#2a2a2a")} />
+                style={{ border: "1px solid #44318D", background: "transparent" }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                onBlur={(e)  => (e.currentTarget.style.borderColor = "#44318D")} />
               <button type="submit" disabled={addingMember}
                 className="flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-medium text-white transition-colors hover:opacity-90 disabled:opacity-50"
-                style={{ background: "#1e1e1e", border: "1px solid #2a2a2a" }}>
+                style={{ background: "#44318D", border: "1px solid #44318D" }}>
                 {addingMember ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <UserPlus className="h-3.5 w-3.5" />}
                 Add
               </button>
@@ -423,17 +423,17 @@ export default function TeamsClient({
       </section>
 
       {/* Event types */}
-      <section className="rounded-2xl" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
-        <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "#1e1e1e" }}>
+      <section className="rounded-2xl" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
+        <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "#44318D" }}>
           <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" style={{ color: "#c4956a" }} />
+            <Calendar className="h-4 w-4" style={{ color: "#D83F87" }} />
             <span className="text-sm font-semibold text-white">Event types</span>
-            <span className="text-xs" style={{ color: "#555" }}>{selectedTeam.eventTypes.length}</span>
+            <span className="text-xs" style={{ color: "#A4B3B6" }}>{selectedTeam.eventTypes.length}</span>
           </div>
           {isOwner && (
             <button onClick={() => setShowNewEvent((v) => !v)}
-              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#1e1e1e]"
-              style={{ border: "1px solid #2a2a2a" }}>
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#44318D]"
+              style={{ border: "1px solid #44318D" }}>
               <Plus className="h-3.5 w-3.5" /> New
             </button>
           )}
@@ -441,43 +441,43 @@ export default function TeamsClient({
 
         {/* Create event type form */}
         {showNewEvent && isOwner && (
-          <div className="border-b px-5 py-5" style={{ borderColor: "#1e1e1e", background: "#0e0e0e" }}>
+          <div className="border-b px-5 py-5" style={{ borderColor: "#44318D", background: "#0e0e0e" }}>
             <form onSubmit={handleCreateEvent} className="space-y-3">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>
-                    Title <span style={{ color: "#c4956a" }}>*</span>
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>
+                    Title <span style={{ color: "#D83F87" }}>*</span>
                   </label>
                   <input required value={eventForm.title} onChange={(e) => setEventForm((f) => ({ ...f, title: e.target.value }))}
                     placeholder="30 min team meeting" autoFocus
                     className="w-full rounded-xl px-4 py-2.5 text-sm text-white outline-none"
-                    style={{ border: "1px solid #2a2a2a", background: "transparent" }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                    onBlur={(e)  => (e.currentTarget.style.borderColor = "#2a2a2a")} />
+                    style={{ border: "1px solid #44318D", background: "transparent" }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                    onBlur={(e)  => (e.currentTarget.style.borderColor = "#44318D")} />
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>Duration (min)</label>
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Duration (min)</label>
                   <input type="number" min={5} max={480} required value={eventForm.duration}
                     onChange={(e) => setEventForm((f) => ({ ...f, duration: e.target.value }))}
                     className="w-full rounded-xl px-4 py-2.5 text-sm text-white outline-none"
-                    style={{ border: "1px solid #2a2a2a", background: "transparent" }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "#c4956a")}
-                    onBlur={(e)  => (e.currentTarget.style.borderColor = "#2a2a2a")} />
+                    style={{ border: "1px solid #44318D", background: "transparent" }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#D83F87")}
+                    onBlur={(e)  => (e.currentTarget.style.borderColor = "#44318D")} />
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>Type</label>
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Type</label>
                   <select value={eventForm.kind} onChange={(e) => setEventForm((f) => ({ ...f, kind: e.target.value }))}
                     className="w-full rounded-xl px-4 py-2.5 text-sm text-white outline-none"
-                    style={{ border: "1px solid #2a2a2a", background: "#111" }}>
+                    style={{ border: "1px solid #44318D", background: "#2A1B3D" }}>
                     <option value="ROUND_ROBIN">Round robin</option>
                     <option value="COLLECTIVE">Collective</option>
                   </select>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>Location</label>
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Location</label>
                   <select value={eventForm.locationType} onChange={(e) => setEventForm((f) => ({ ...f, locationType: e.target.value }))}
                     className="w-full rounded-xl px-4 py-2.5 text-sm text-white outline-none"
-                    style={{ border: "1px solid #2a2a2a", background: "#111" }}>
+                    style={{ border: "1px solid #44318D", background: "#2A1B3D" }}>
                     <option value="GOOGLE_MEET" disabled>Google Meet (Coming soon)</option>
                     <option value="ZOOM">Zoom</option>
                     <option value="TEAMS" disabled>Microsoft Teams (Coming soon)</option>
@@ -490,11 +490,11 @@ export default function TeamsClient({
               <div className="flex gap-2">
                 <button type="submit" disabled={creatingEvent}
                   className="flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
-                  style={{ background: "#c4956a" }}>
+                  style={{ background: "#D83F87" }}>
                   {creatingEvent && <Loader2 className="h-3 w-3 animate-spin" />} Create
                 </button>
                 <button type="button" onClick={() => { setShowNewEvent(false); setCreateEventError(null); }}
-                  className="rounded-xl px-4 py-2 text-sm" style={{ border: "1px solid #2a2a2a", color: "#9a9a9a" }}>
+                  className="rounded-xl px-4 py-2 text-sm" style={{ border: "1px solid #44318D", color: "#A4B3B6" }}>
                   Cancel
                 </button>
               </div>
@@ -504,35 +504,35 @@ export default function TeamsClient({
 
         {/* Event list */}
         {selectedTeam.eventTypes.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12" style={{ color: "#444" }}>
+          <div className="flex flex-col items-center justify-center py-12" style={{ color: "#A4B3B6" }}>
             <Calendar className="mb-2 h-7 w-7" />
             <p className="text-sm">No event types yet</p>
           </div>
         ) : (
-          <div className="divide-y" style={{ borderColor: "#1a1a1a" }}>
+          <div className="divide-y" style={{ borderColor: "#2A1B3D" }}>
             {selectedTeam.eventTypes.map((et) => {
               const shareUrl = `${appUrl}/team/${selectedTeam.slug}/${et.slug}`;
               return (
                 <div key={et.id} className="flex items-center justify-between gap-4 px-5 py-4">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-2 w-2 shrink-0 rounded-full" style={{ background: et.color ?? "#c4956a" }} />
+                    <div className="h-2 w-2 shrink-0 rounded-full" style={{ background: et.color ?? "#D83F87" }} />
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-sm font-medium text-white truncate">{et.title}</span>
                         {kindBadge(et.kind)}
                       </div>
-                      <p className="mt-0.5 text-xs" style={{ color: "#555" }}>
+                      <p className="mt-0.5 text-xs" style={{ color: "#A4B3B6" }}>
                         {durationLabel(et.duration)}
                         {" · "}
-                        <span style={{ color: "#444" }}>/team/{selectedTeam.slug}/{et.slug}</span>
+                        <span style={{ color: "#A4B3B6" }}>/team/{selectedTeam.slug}/{et.slug}</span>
                       </p>
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-1">
                     <CopyButton text={shareUrl} />
                     <a href={shareUrl} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors hover:bg-[#2a2a2a]"
-                      style={{ color: "#9a9a9a" }}>
+                      className="flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors hover:bg-[#44318D]"
+                      style={{ color: "#A4B3B6" }}>
                       <ExternalLink className="h-3 w-3" />
                     </a>
                     {isOwner && (

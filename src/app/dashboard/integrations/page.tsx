@@ -51,8 +51,8 @@ export default async function IntegrationsPage({ searchParams }: Props) {
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-[#ffffff]">Integrations</h1>
-        <p className="mt-1 text-sm text-[#9a9a9a]">
+        <h1 className="text-2xl font-bold text-text-light">Integrations</h1>
+        <p className="mt-1 text-sm text-text-muted">
           Connect your calendar and conferencing tools to automate scheduling.
         </p>
       </div>
@@ -74,12 +74,12 @@ export default async function IntegrationsPage({ searchParams }: Props) {
 
       {/* Calendar */}
       <section>
-        <h2 style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "#555",
+        <h2 style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "#A4B3B6",
           textTransform: "uppercase", marginBottom: 12 }}>
           Calendar
         </h2>
         <IntegrationCard
-          icon={<Calendar size={18} color="#c4956a" />}
+          icon={<Calendar size={18} color="#D83F87" />}
           name="Google Calendar"
           isConnected={isGoogleConnected}
           connectedSince={isGoogleConnected && googleIntegration?.updatedAt ? fmtDate(googleIntegration.updatedAt) : null}
@@ -93,7 +93,7 @@ export default async function IntegrationsPage({ searchParams }: Props) {
 
       {/* Conferencing */}
       <section>
-        <h2 style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "#555",
+        <h2 style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "#A4B3B6",
           textTransform: "uppercase", marginBottom: 12 }}>
           Conferencing
         </h2>
@@ -130,15 +130,15 @@ export default async function IntegrationsPage({ searchParams }: Props) {
               : "Automatically create Zoom meetings for video call event types."}
             connectHref="/api/integrations/zoom/connect"
             disconnectButton={<IntegrationDisconnectButton apiPath="/api/integrations/zoom/disconnect" />}
-            setupNote={!isZoomConnected ? "Requires ZOOM_CLIENT_ID + ZOOM_CLIENT_SECRET in .env" : null}
+            
           />
           {/* Microsoft Teams — Coming Soon */}
-          <div style={{ background: "#111111", border: "1px solid #1e1e1e", borderRadius: 10,
+          <div style={{ background: "#2A1B3D", border: "1px solid #44318D", borderRadius: 10,
             padding: "20px 24px", display: "flex", alignItems: "start",
             justifyContent: "space-between", gap: 16, opacity: 0.6 }}>
             <div style={{ display: "flex", alignItems: "start", gap: 14 }}>
-              <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#1a1a1a",
-                border: "1px solid #2a2a2a", display: "flex", alignItems: "center",
+              <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#2A1B3D",
+                border: "1px solid #44318D", display: "flex", alignItems: "center",
                 justifyContent: "center", flexShrink: 0 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <rect width="24" height="24" rx="5" fill="#5059C9"/>
@@ -148,14 +148,14 @@ export default async function IntegrationsPage({ searchParams }: Props) {
               </div>
               <div>
                 <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>Microsoft Teams</div>
-                <div style={{ fontSize: 13, color: "#9a9a9a", marginTop: 2, lineHeight: 1.5 }}>
+                <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
                   Automatically create Teams meetings for video call event types.
                 </div>
               </div>
             </div>
             <div style={{ flexShrink: 0, marginTop: 2 }}>
               <span style={{ display: "inline-block", padding: "5px 12px", borderRadius: 6,
-                background: "#1e1e1e", border: "1px solid #2a2a2a",
+                background: "#44318D", border: "1px solid #44318D",
                 color: "#888888", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap" }}>
                 Coming soon
               </span>
@@ -181,28 +181,28 @@ function IntegrationCard({
   setupNote?:       string | null;
 }) {
   return (
-    <div style={{ background: "#111111", border: "1px solid #1e1e1e", borderRadius: 10,
+    <div style={{ background: "#2A1B3D", border: "1px solid #44318D", borderRadius: 10,
       padding: "20px 24px", display: "flex", alignItems: "start",
       justifyContent: "space-between", gap: 16 }}>
       <div style={{ display: "flex", alignItems: "start", gap: 14 }}>
-        <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#1a1a1a",
-          border: "1px solid #2a2a2a", display: "flex", alignItems: "center",
+        <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#2A1B3D",
+          border: "1px solid #44318D", display: "flex", alignItems: "center",
           justifyContent: "center", flexShrink: 0 }}>
           {icon}
         </div>
         <div>
           <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>{name}</div>
-          <div style={{ fontSize: 13, color: "#9a9a9a", marginTop: 2, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
             {isConnected ? (
               <>
                 <span style={{ color: "#4ade80", fontWeight: 500 }}>● Connected</span>
-                {connectedSince && <span style={{ color: "#555", marginLeft: 8 }}>since {connectedSince}</span>}
-                <div style={{ marginTop: 6, color: "#9a9a9a" }}>{description}</div>
+                {connectedSince && <span style={{ color: "#A4B3B6", marginLeft: 8 }}>since {connectedSince}</span>}
+                <div style={{ marginTop: 6, color: "#A4B3B6" }}>{description}</div>
               </>
             ) : (
               <>
                 {description}
-                {setupNote && <div style={{ marginTop: 4, fontSize: 11, color: "#444" }}>{setupNote}</div>}
+                {setupNote && <div style={{ marginTop: 4, fontSize: 11, color: "#A4B3B6" }}>{setupNote}</div>}
               </>
             )}
           </div>
@@ -211,7 +211,7 @@ function IntegrationCard({
       <div style={{ flexShrink: 0, marginTop: 2 }}>
         {isConnected ? disconnectButton : (
           <a href={connectHref} style={{ display: "inline-block", padding: "7px 16px",
-            borderRadius: 6, background: "#c4956a", color: "#000000", fontWeight: 600,
+            borderRadius: 6, background: "#D83F87", color: "#000000", fontWeight: 600,
             fontSize: 13, textDecoration: "none", whiteSpace: "nowrap" }}>
             Connect
           </a>

@@ -43,7 +43,7 @@ const createSchema = z.object({
   duration:     z.number().int().min(5).max(480),
   kind:         z.enum(["ONE_ON_ONE", "GROUP", "ROUND_ROBIN", "COLLECTIVE"]).default("ROUND_ROBIN"),
   locationType: z.enum(["GOOGLE_MEET", "ZOOM", "TEAMS", "PHONE", "IN_PERSON", "OTHER"]).default("GOOGLE_MEET"),
-  color:        z.string().regex(/^#[0-9a-fA-F]{6}$/).default("#c4956a"),
+  color:        z.string().regex(/^#[0-9a-fA-F]{6}$/).default("#D83F87"),
   bufferBefore: z.number().int().min(0).max(120).default(0),
   bufferAfter:  z.number().int().min(0).max(120).default(0),
   minNotice:    z.number().int().min(0).max(10080).default(0),

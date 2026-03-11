@@ -14,7 +14,7 @@ export async function GET() {
       orderBy: { createdAt: "asc" },
     });
 
-    return NextResponse.json({ eventTypes });
+    return NextResponse.json({ eventTypes, integrations: await db.calendarIntegration.findMany({ where: { userId: session.user.id }, select: { provider: true, isActive: true } }) });
   } catch (err) {
     console.error("[GET /api/events]", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

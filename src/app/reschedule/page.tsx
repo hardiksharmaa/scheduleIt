@@ -170,16 +170,16 @@ export default function ReschedulePage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-16" style={{ background: "#0c0c0c" }}>
       <div className="w-full max-w-lg">
         <div className="mb-8 text-center">
-          <Link href="/" className="text-lg font-bold" style={{ color: "#c4956a" }}>ScheduleIt</Link>
+          <Link href="/" className="text-lg font-bold" style={{ color: "#D83F87" }}>ScheduleIt</Link>
         </div>
 
-        <div className="rounded-2xl p-8" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+        <div className="rounded-2xl p-8" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
 
           {/* Loading */}
           {loading && (
             <div className="flex flex-col items-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin mb-3" style={{ color: "#555" }} />
-              <p className="text-sm" style={{ color: "#555" }}>Loading booking…</p>
+              <Loader2 className="h-8 w-8 animate-spin mb-3" style={{ color: "#A4B3B6" }} />
+              <p className="text-sm" style={{ color: "#A4B3B6" }}>Loading booking…</p>
             </div>
           )}
 
@@ -188,7 +188,7 @@ export default function ReschedulePage() {
             <div className="flex flex-col items-center py-4 text-center">
               <XCircle className="h-12 w-12 mb-4" style={{ color: "#ef4444" }} />
               <h1 className="text-lg font-bold text-white mb-2">Something went wrong</h1>
-              <p className="text-sm" style={{ color: "#9a9a9a" }}>{error}</p>
+              <p className="text-sm" style={{ color: "#A4B3B6" }}>{error}</p>
             </div>
           )}
 
@@ -197,14 +197,14 @@ export default function ReschedulePage() {
             <div className="flex flex-col items-center py-4 text-center">
               <CheckCircle className="h-12 w-12 mb-4" style={{ color: "#4ade80" }} />
               <h1 className="text-xl font-bold text-white mb-2">Booking rescheduled!</h1>
-              <p className="text-sm mb-1" style={{ color: "#9a9a9a" }}>
+              <p className="text-sm mb-1" style={{ color: "#A4B3B6" }}>
                 {booking.eventType.title} with {booking.host.name}
               </p>
               <p className="text-sm font-medium text-white mb-1">{fmtDate(done.startTime, tz)}</p>
-              <p className="text-sm mb-6" style={{ color: "#9a9a9a" }}>
+              <p className="text-sm mb-6" style={{ color: "#A4B3B6" }}>
                 {fmtTime(done.startTime, tz)} – {fmtTime(done.endTime, tz)}
               </p>
-              <Link href="/" className="text-sm font-medium hover:underline" style={{ color: "#c4956a" }}>Return home</Link>
+              <Link href="/" className="text-sm font-medium hover:underline" style={{ color: "#D83F87" }}>Return home</Link>
             </div>
           )}
 
@@ -217,46 +217,46 @@ export default function ReschedulePage() {
                   <div className="h-3 w-3 rounded-full shrink-0" style={{ background: booking.eventType.color }} />
                   <h1 className="text-lg font-bold text-white">Reschedule</h1>
                 </div>
-                <p className="text-sm ml-5" style={{ color: "#9a9a9a" }}>
+                <p className="text-sm ml-5" style={{ color: "#A4B3B6" }}>
                   {booking.eventType.title} with {booking.host.name}
                 </p>
               </div>
 
               {/* Current booking summary */}
-              <div className="rounded-xl p-3 mb-6 space-y-2" style={{ background: "#0c0c0c", border: "1px solid #1e1e1e" }}>
-                <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "#555" }}>Current time</p>
+              <div className="rounded-xl p-3 mb-6 space-y-2" style={{ background: "#0c0c0c", border: "1px solid #44318D" }}>
+                <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Current time</p>
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-3.5 w-3.5 shrink-0" style={{ color: "#555" }} />
-                  <span className="text-sm" style={{ color: "#9a9a9a" }}>{fmtDate(booking.startTime, tz)}</span>
+                  <Calendar className="h-3.5 w-3.5 shrink-0" style={{ color: "#A4B3B6" }} />
+                  <span className="text-sm" style={{ color: "#A4B3B6" }}>{fmtDate(booking.startTime, tz)}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: "#555" }} />
-                  <span className="text-sm" style={{ color: "#9a9a9a" }}>
+                  <Clock className="h-3.5 w-3.5 shrink-0" style={{ color: "#A4B3B6" }} />
+                  <span className="text-sm" style={{ color: "#A4B3B6" }}>
                     {fmtTime(booking.startTime, tz)} – {fmtTime(booking.endTime, tz)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <User className="h-3.5 w-3.5 shrink-0" style={{ color: "#555" }} />
-                  <span className="text-sm" style={{ color: "#9a9a9a" }}>{booking.inviteeName}</span>
+                  <User className="h-3.5 w-3.5 shrink-0" style={{ color: "#A4B3B6" }} />
+                  <span className="text-sm" style={{ color: "#A4B3B6" }}>{booking.inviteeName}</span>
                 </div>
               </div>
 
               {/* Calendar */}
-              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#555" }}>Pick a new date</p>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#A4B3B6" }}>Pick a new date</p>
 
               {/* Month nav */}
               <div className="flex items-center justify-between mb-3">
                 <button onClick={() => { if (viewMonth === 1) { setViewMonth(12); setViewYear(y => y - 1); } else setViewMonth(m => m - 1); }}
                   disabled={!canGoToPrev}
-                  className="h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#1e1e1e] disabled:opacity-20 disabled:pointer-events-none"
-                  style={{ color: "#9a9a9a" }}>
+                  className="h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#44318D] disabled:opacity-20 disabled:pointer-events-none"
+                  style={{ color: "#A4B3B6" }}>
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <span className="text-sm font-semibold text-white">{MONTHS[viewMonth - 1]} {viewYear}</span>
                 <button onClick={() => { if (viewMonth === 12) { setViewMonth(1); setViewYear(y => y + 1); } else setViewMonth(m => m + 1); }}
                   disabled={!canGoToNext}
-                  className="h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#1e1e1e] disabled:opacity-20 disabled:pointer-events-none"
-                  style={{ color: "#9a9a9a" }}>
+                  className="h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#44318D] disabled:opacity-20 disabled:pointer-events-none"
+                  style={{ color: "#A4B3B6" }}>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -264,7 +264,7 @@ export default function ReschedulePage() {
               {/* Day headers */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", marginBottom: 4 }}>
                 {DAY_LABELS.map((d, i) => (
-                  <div key={i} style={{ textAlign: "center", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", color: "#444", padding: "0 0 4px" }}>{d}</div>
+                  <div key={i} style={{ textAlign: "center", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", color: "#A4B3B6", padding: "0 0 4px" }}>{d}</div>
                 ))}
               </div>
 
@@ -278,9 +278,9 @@ export default function ReschedulePage() {
                   const disabled = past || beyond;
                   const isToday = viewYear === today.year && viewMonth === today.month && day === today.day;
                   const isSelected = dateStr === selectedDate;
-                  const bg = isSelected ? "#c4956a" : "transparent";
-                  const fg = disabled ? "#2e2e2e" : isSelected ? "#fff" : isToday ? "#fff" : "#aaa";
-                  const ring = isToday && !isSelected ? "inset 0 0 0 1px #c4956a44" : "none";
+                  const bg = isSelected ? "#D83F87" : "transparent";
+                  const fg = disabled ? "#44318D" : isSelected ? "#fff" : isToday ? "#fff" : "#A4B3B6";
+                  const ring = isToday && !isSelected ? "inset 0 0 0 1px #D83F8744" : "none";
 
                   return (
                     <button key={dateStr} disabled={disabled}
@@ -289,7 +289,7 @@ export default function ReschedulePage() {
                         borderRadius: 7, fontSize: 12, fontWeight: isSelected || isToday ? 600 : 400,
                         background: bg, color: fg, cursor: disabled ? "default" : "pointer",
                         boxShadow: ring, border: "none", outline: "none", transition: "background 0.1s" }}
-                      onMouseEnter={(e) => { if (!disabled && !isSelected) e.currentTarget.style.background = "#1c1c1c"; }}
+                      onMouseEnter={(e) => { if (!disabled && !isSelected) e.currentTarget.style.background = "#44318D"; }}
                       onMouseLeave={(e) => { if (!disabled && !isSelected) e.currentTarget.style.background = bg; }}
                     >{day}</button>
                   );
@@ -299,16 +299,16 @@ export default function ReschedulePage() {
               {/* Slots */}
               {selectedDate && (
                 <>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#555" }}>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#A4B3B6" }}>
                     Available times — {fmt(selectedDate + "T12:00:00Z", tz, { weekday: "short", month: "short", day: "numeric" })}
                   </p>
                   {slotsLoading && (
                     <div className="flex justify-center py-6">
-                      <Loader2 className="h-5 w-5 animate-spin" style={{ color: "#555" }} />
+                      <Loader2 className="h-5 w-5 animate-spin" style={{ color: "#A4B3B6" }} />
                     </div>
                   )}
                   {!slotsLoading && slots.length === 0 && (
-                    <p className="text-sm text-center py-4" style={{ color: "#555" }}>No available times on this day.</p>
+                    <p className="text-sm text-center py-4" style={{ color: "#A4B3B6" }}>No available times on this day.</p>
                   )}
                   {!slotsLoading && slots.length > 0 && (
                     <div className="grid grid-cols-3 gap-2 mb-6">
@@ -318,8 +318,8 @@ export default function ReschedulePage() {
                           <button key={s.start} onClick={() => setSelectedSlot(s)}
                             className="rounded-lg py-2 text-xs font-medium transition-colors"
                             style={isSel
-                              ? { background: "#c4956a", color: "#000" }
-                              : { background: "#1a1a1a", color: "#9a9a9a", border: "1px solid #2e2e2e" }}>
+                              ? { background: "#D83F87", color: "#000" }
+                              : { background: "#2A1B3D", color: "#A4B3B6", border: "1px solid #44318D" }}>
                             {fmtTime(s.start, tz)}
                           </button>
                         );
@@ -334,7 +334,7 @@ export default function ReschedulePage() {
                 onClick={handleSubmit}
                 disabled={!selectedSlot || submitting}
                 className="w-full rounded-xl py-3 text-sm font-semibold transition-opacity disabled:opacity-40"
-                style={{ background: "#c4956a", color: "#000" }}
+                style={{ background: "#D83F87", color: "#000" }}
               >
                 {submitting ? "Rescheduling…" : selectedSlot ? `Reschedule to ${fmtTime(selectedSlot.start, tz)}` : "Select a new time"}
               </button>

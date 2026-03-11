@@ -69,16 +69,16 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="mb-8 text-center">
-          <Link href="/" className="text-lg font-bold" style={{ color: "#c4956a" }}>ScheduleIt</Link>
+          <Link href="/" className="text-lg font-bold" style={{ color: "#D83F87" }}>ScheduleIt</Link>
         </div>
 
-        <div className="rounded-2xl p-8" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+        <div className="rounded-2xl p-8" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
 
           {/* Loading */}
           {loading && (
             <div className="flex flex-col items-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin mb-3" style={{ color: "#555" }} />
-              <p className="text-sm" style={{ color: "#555" }}>Loading booking details…</p>
+              <Loader2 className="h-8 w-8 animate-spin mb-3" style={{ color: "#A4B3B6" }} />
+              <p className="text-sm" style={{ color: "#A4B3B6" }}>Loading booking details…</p>
             </div>
           )}
 
@@ -87,16 +87,16 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
             <div className="flex flex-col items-center py-4 text-center">
               <XCircle className="h-12 w-12 mb-4" style={{ color: "#ef4444" }} />
               <h1 className="text-lg font-bold text-white mb-2">Something went wrong</h1>
-              <p className="text-sm" style={{ color: "#9a9a9a" }}>{error}</p>
+              <p className="text-sm" style={{ color: "#A4B3B6" }}>{error}</p>
             </div>
           )}
 
           {/* Already cancelled */}
           {!loading && !error && booking?.status === "CANCELLED" && (
             <div className="flex flex-col items-center py-4 text-center">
-              <CheckCircle className="h-12 w-12 mb-4" style={{ color: "#9a9a9a" }} />
+              <CheckCircle className="h-12 w-12 mb-4" style={{ color: "#A4B3B6" }} />
               <h1 className="text-lg font-bold text-white mb-2">Already cancelled</h1>
-              <p className="text-sm" style={{ color: "#9a9a9a" }}>This booking has already been cancelled.</p>
+              <p className="text-sm" style={{ color: "#A4B3B6" }}>This booking has already been cancelled.</p>
             </div>
           )}
 
@@ -105,10 +105,10 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
             <div className="flex flex-col items-center py-4 text-center">
               <CheckCircle className="h-12 w-12 mb-4" style={{ color: "#4ade80" }} />
               <h1 className="text-xl font-bold text-white mb-2">Booking cancelled</h1>
-              <p className="text-sm mb-6" style={{ color: "#9a9a9a" }}>
+              <p className="text-sm mb-6" style={{ color: "#A4B3B6" }}>
                 Your booking has been cancelled. A confirmation has been sent to {booking?.inviteeEmail}.
               </p>
-              <Link href="/" className="text-sm font-medium hover:underline" style={{ color: "#c4956a" }}>
+              <Link href="/" className="text-sm font-medium hover:underline" style={{ color: "#D83F87" }}>
                 Return home
               </Link>
             </div>
@@ -122,27 +122,27 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
                   <div className="h-3 w-3 rounded-full shrink-0" style={{ background: booking.eventType.color }} />
                   <h1 className="text-lg font-bold text-white">Cancel this booking?</h1>
                 </div>
-                <p className="text-sm ml-5" style={{ color: "#9a9a9a" }}>
+                <p className="text-sm ml-5" style={{ color: "#A4B3B6" }}>
                   {booking.eventType.title} with {booking.host.name}
                 </p>
               </div>
 
               {/* Booking details */}
-              <div className="rounded-xl p-4 mb-6 space-y-3" style={{ background: "#0c0c0c", border: "1px solid #1e1e1e" }}>
+              <div className="rounded-xl p-4 mb-6 space-y-3" style={{ background: "#0c0c0c", border: "1px solid #44318D" }}>
                 <div className="flex items-center gap-2.5">
-                  <User className="h-4 w-4 shrink-0" style={{ color: "#555" }} />
+                  <User className="h-4 w-4 shrink-0" style={{ color: "#A4B3B6" }} />
                   <span className="text-sm text-white">{booking.inviteeName}</span>
-                  <span style={{ color: "#333" }}>·</span>
+                  <span style={{ color: "#A4B3B6" }}>·</span>
                   <span className="text-xs" style={{ color: "#666" }}>{booking.inviteeEmail}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <Calendar className="h-4 w-4 shrink-0" style={{ color: "#555" }} />
+                  <Calendar className="h-4 w-4 shrink-0" style={{ color: "#A4B3B6" }} />
                   <span className="text-sm" style={{ color: "#ccc" }}>
                     {formatDateTime(booking.startTime, tz, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <Clock className="h-4 w-4 shrink-0" style={{ color: "#555" }} />
+                  <Clock className="h-4 w-4 shrink-0" style={{ color: "#A4B3B6" }} />
                   <span className="text-sm" style={{ color: "#ccc" }}>
                     {formatDateTime(booking.startTime, tz, { hour: "numeric", minute: "2-digit", hour12: true })}
                     {" – "}
@@ -153,7 +153,7 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
 
               {/* Optional reason */}
               <div className="mb-6">
-                <label className="block text-xs font-medium mb-1.5" style={{ color: "#9a9a9a" }}>
+                <label className="block text-xs font-medium mb-1.5" style={{ color: "#A4B3B6" }}>
                   Reason for cancelling (optional)
                 </label>
                 <textarea
@@ -164,7 +164,7 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
                   className="w-full rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1"
                   style={{
                     background: "#0c0c0c",
-                    border: "1px solid #2e2e2e",
+                    border: "1px solid #44318D",
                     color: "#fff",
                   }}
                 />
@@ -181,8 +181,8 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
                 </button>
                 <Link
                   href="/"
-                  className="w-full rounded-lg py-2.5 text-sm font-medium text-center transition-colors hover:bg-[#1a1a1a]"
-                  style={{ color: "#9a9a9a", border: "1px solid #2e2e2e" }}
+                  className="w-full rounded-lg py-2.5 text-sm font-medium text-center transition-colors hover:bg-[#2A1B3D]"
+                  style={{ color: "#A4B3B6", border: "1px solid #44318D" }}
                 >
                   Keep my booking
                 </Link>

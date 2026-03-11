@@ -26,7 +26,7 @@ function Avatar({ picture, image, name, size = 80 }: { picture: string | null; i
           src={src}
           alt={name ?? "Avatar"}
           style={{ width: size, height: size }}
-          className="rounded-full object-cover ring-4 ring-[#2e2e2e]"
+          className="rounded-full object-cover ring-4 ring-border"
         />
       );
     }
@@ -36,14 +36,14 @@ function Avatar({ picture, image, name, size = 80 }: { picture: string | null; i
         alt={name ?? "Avatar"}
         width={size}
         height={size}
-        className="rounded-full object-cover ring-4 ring-[#2e2e2e]"
+        className="rounded-full object-cover ring-4 ring-border"
         style={{ width: size, height: size }}
       />
     );
   }
   return (
     <div
-      className="flex items-center justify-center rounded-full bg-[#c4956a] font-bold text-white ring-4 ring-[#2e2e2e]"
+      className="flex items-center justify-center rounded-full bg-accent font-bold text-white ring-4 ring-border"
       style={{ width: size, height: size, fontSize: size * 0.35 }}
     >
       {initials}
@@ -113,28 +113,28 @@ export default async function PublicProfilePage({ params }: PageProps) {
   if (!user) notFound();
 
   return (
-    <div className="min-h-screen bg-[#0c0c0c] px-4 py-16">
+    <div className="min-h-screen bg-bg-primary px-4 py-16">
       <div className="mx-auto max-w-2xl">
         {/* Profile header */}
         <div className="mb-12 flex flex-col items-center text-center">
           <Avatar picture={user.picture} image={user.image} name={user.name} size={88} />
           <h1 className="mt-5 text-3xl font-bold text-white">{user.name}</h1>
-          <p className="mt-1 text-sm text-[#9a9a9a]">@{user.username}</p>
-          <div className="mt-2 flex items-center gap-1.5 text-xs text-[#9a9a9a]">
+          <p className="mt-1 text-sm text-text-muted">@{user.username}</p>
+          <div className="mt-2 flex items-center gap-1.5 text-xs text-text-muted">
             <Globe className="h-3 w-3" />
             {user.timezone}
           </div>
-          <p className="mt-4 max-w-md text-sm text-[#9a9a9a]">
+          <p className="mt-4 max-w-md text-sm text-text-muted">
             Select an event type below to book a time.
           </p>
         </div>
 
         {/* Event types */}
         {user.eventTypes.length === 0 ? (
-          <div className="rounded-xl border border-[#2e2e2e] bg-[#181818] p-12 text-center">
-            <Calendar className="mx-auto mb-3 h-10 w-10 text-[#2e2e2e]" />
+          <div className="rounded-xl border border-border bg-bg-secondary p-12 text-center">
+            <Calendar className="mx-auto mb-3 h-10 w-10 text-border" />
             <p className="text-sm font-medium text-white">No event types yet</p>
-            <p className="mt-1 text-xs text-[#9a9a9a]">
+            <p className="mt-1 text-xs text-text-muted">
               {user.name} hasn&apos;t published any booking types yet.
             </p>
           </div>
@@ -144,24 +144,24 @@ export default async function PublicProfilePage({ params }: PageProps) {
               <Link
                 key={event.id}
                 href={`/${username}/${event.slug}`}
-                className="group flex items-center justify-between rounded-xl border border-[#2e2e2e] bg-[#181818] p-6 transition-all hover:border-[#c4956a] hover:bg-[#1e1e1e]"
+                className="group flex items-center justify-between rounded-xl border border-border bg-bg-secondary p-6 transition-all hover:border-accent hover:bg-[#44318D]"
               >
                 <div className="flex items-start gap-4">
                   {/* Color dot */}
                   <div
                     className="mt-1 h-3 w-3 shrink-0 rounded-full"
-                    style={{ backgroundColor: event.color ?? "#c4956a" }}
+                    style={{ backgroundColor: event.color ?? "#D83F87" }}
                   />
                   <div>
-                    <h2 className="text-base font-semibold text-white group-hover:text-[#c4956a] transition-colors">
+                    <h2 className="text-base font-semibold text-white group-hover:text-accent transition-colors">
                       {event.title}
                     </h2>
                     {event.description && (
-                      <p className="mt-1 text-sm text-[#9a9a9a] line-clamp-2">
+                      <p className="mt-1 text-sm text-text-muted line-clamp-2">
                         {event.description}
                       </p>
                     )}
-                    <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[#9a9a9a]">
+                    <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-text-muted">
                       <span className="flex items-center gap-1">
                         <Clock className="h-3.5 w-3.5" />
                         {durationLabel(event.duration)}
@@ -175,7 +175,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
                     </div>
                   </div>
                 </div>
-                <div className="ml-4 shrink-0 text-sm font-medium text-[#c4956a] opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="ml-4 shrink-0 text-sm font-medium text-accent opacity-0 transition-opacity group-hover:opacity-100">
                   Book →
                 </div>
               </Link>
@@ -187,7 +187,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
         <div className="mt-12 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs text-[#9a9a9a] hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-white transition-colors"
           >
             <Calendar className="h-3.5 w-3.5" />
             Powered by ScheduleIt

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import {
   Plus,
   Link2,
@@ -18,11 +19,13 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type EventTypeKind = "ONE_ON_ONE" | "GROUP" | "ROUND_ROBIN" | "COLLECTIVE";
 type LocationType = "GOOGLE_MEET" | "ZOOM" | "TEAMS" | "PHONE" | "IN_PERSON" | "OTHER";
+type IntegrationProvider = "GOOGLE_CALENDAR" | "ZOOM" | "MICROSOFT_TEAMS";
 
 interface DaySchedule {
   dayOfWeek: number; // 0 = Sun … 6 = Sat
@@ -88,7 +91,7 @@ const LOCATION_LABELS: Record<LocationType, string> = {
 };
 
 const PRESET_COLORS = [
-  "#c4956a",
+  "#D83F87",
   "#6a9ec4",
   "#6ac47a",
   "#c46a6a",
@@ -152,38 +155,14 @@ const BLANK_FORM: FormState = {
   maxBookings: "",
   maxAdvanceDays: "60",
   isActive: true,
-  color: "#c4956a",
+  color: "#D83F87",
   slug: "",
   availabilityDays: [],
 };
 
 // ─── Toast ───────────────────────────────────────────────────────────────────
 
-function Toast({
-  msg,
-  isError,
-  onClose,
-}: {
-  msg: string;
-  isError?: boolean;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    const t = setTimeout(onClose, 3500);
-    return () => clearTimeout(t);
-  }, [onClose]);
-
-  return (
-    <div
-      className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium shadow-xl ${
-        isError ? "bg-red-900 text-red-100" : "bg-[#c4956a] text-white"
-      }`}
-    >
-      {isError ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
-      {msg}
-    </div>
-  );
-}
+// ─── Toast Removed ────────────────────────────────────────────────────────────
 
 // ─── Modal ───────────────────────────────────────────────────────────────────
 
@@ -201,12 +180,12 @@ function Modal({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/60 p-4 pt-16">
-      <div className="relative w-full max-w-lg rounded-2xl border border-[#2e2e2e] bg-[#0c0c0c] shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#2e2e2e] px-6 py-4">
+      <div className="relative w-full max-w-lg rounded-2xl border border-border bg-bg-primary shadow-2xl">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
           <h2 className="text-base font-semibold text-white">{title}</h2>
           <button
             onClick={onClose}
-            className="text-[#9a9a9a] transition-colors hover:text-white"
+            className="text-text-muted transition-colors hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
@@ -222,7 +201,7 @@ function Modal({
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1">
-      <label className="block text-xs font-medium text-[#9a9a9a]">{label}</label>
+      <label className="block text-xs font-medium text-text-muted">{label}</label>
       {children}
       {error && <p className="text-xs text-red-400">{error}</p>}
     </div>
@@ -252,7 +231,7 @@ function Input({
       max={max}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-lg border border-[#2e2e2e] bg-[#181818] px-3 py-2 text-sm text-white placeholder-[#9a9a9a] outline-none focus:border-[#c4956a] focus:ring-1 focus:ring-[#c4956a]"
+      className="w-full rounded-lg border border-border bg-bg-secondary px-3 py-2 text-sm text-white placeholder-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
     />
   );
 }
@@ -270,7 +249,7 @@ function Select<T extends string>({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as T)}
-      className="w-full rounded-lg border border-[#2e2e2e] bg-[#181818] px-3 py-2 text-sm text-white outline-none focus:border-[#c4956a] focus:ring-1 focus:ring-[#c4956a]"
+      className="w-full rounded-lg border border-border bg-bg-secondary px-3 py-2 text-sm text-white outline-none focus:border-accent focus:ring-1 focus:ring-accent"
     >
       {options.map((o) => (
         <option key={o.value} value={o.value} disabled={o.disabled}>
@@ -298,7 +277,7 @@ function Textarea({
       rows={rows}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full resize-none rounded-lg border border-[#2e2e2e] bg-[#181818] px-3 py-2 text-sm text-white placeholder-[#9a9a9a] outline-none focus:border-[#c4956a] focus:ring-1 focus:ring-[#c4956a]"
+      className="w-full resize-none rounded-lg border border-border bg-bg-secondary px-3 py-2 text-sm text-white placeholder-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
     />
   );
 }
@@ -312,6 +291,7 @@ function EventForm({
   saving,
   isEdit,
   availability,
+  integrations,
 }: {
   form: FormState;
   setForm: React.Dispatch<React.SetStateAction<FormState>>;
@@ -319,6 +299,7 @@ function EventForm({
   saving: boolean;
   isEdit: boolean;
   availability: DaySchedule[];
+  integrations: { provider: IntegrationProvider; isActive: boolean }[];
 }) {
   const set = <K extends keyof FormState>(key: K, val: FormState[K]) =>
     setForm((prev) => ({ ...prev, [key]: val }));
@@ -356,6 +337,20 @@ function EventForm({
     }
   }
 
+  // Integration Status derived from selection
+  const isMeetSelected = form.locationType === "GOOGLE_MEET";
+  const isZoomSelected = form.locationType === "ZOOM";
+  const isTeamsSelected = form.locationType === "TEAMS";
+
+  const isMeetConnected = integrations.some(i => i.provider === "GOOGLE_CALENDAR" && i.isActive);
+  const isZoomConnected = integrations.some(i => i.provider === "ZOOM" && i.isActive);
+  const isTeamsConnected = integrations.some(i => i.provider === "MICROSOFT_TEAMS" && i.isActive);
+
+  const isIntegrationMissing =
+    (isMeetSelected && !isMeetConnected) ||
+    (isZoomSelected && !isZoomConnected) ||
+    (isTeamsSelected && !isTeamsConnected);
+
   return (
     <div className="space-y-4">
       {/* Title */}
@@ -366,7 +361,7 @@ function EventForm({
       {/* Slug */}
       <Field label="Slug (URL)">
         <div className="relative">
-          <span className="absolute inset-y-0 left-3 flex items-center text-xs text-[#9a9a9a] pointer-events-none">
+          <span className="absolute inset-y-0 left-3 flex items-center text-xs text-text-muted pointer-events-none">
             /
           </span>
           <input
@@ -374,7 +369,7 @@ function EventForm({
             value={form.slug}
             onChange={(e) => set("slug", e.target.value)}
             placeholder="30-minute-meeting"
-            className="w-full rounded-lg border border-[#2e2e2e] bg-[#181818] py-2 pl-6 pr-3 text-sm text-white placeholder-[#9a9a9a] outline-none focus:border-[#c4956a] focus:ring-1 focus:ring-[#c4956a]"
+            className="w-full rounded-lg border border-border bg-bg-secondary py-2 pl-6 pr-3 text-sm text-white placeholder-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
           />
         </div>
       </Field>
@@ -407,8 +402,8 @@ function EventForm({
                   onClick={() => set("duration", d)}
                   className={`rounded px-2 py-0.5 text-xs transition-colors ${
                     form.duration === d
-                      ? "bg-[#c4956a] text-white"
-                      : "bg-[#2e2e2e] text-[#9a9a9a] hover:text-white"
+                      ? "bg-accent text-white"
+                      : "bg-border text-text-muted hover:text-white"
                   }`}
                 >
                   {d}m
@@ -438,10 +433,19 @@ function EventForm({
           onChange={(v) => set("locationType", v)}
           options={(Object.entries(LOCATION_LABELS) as [LocationType, string][]).map(([value, label]) => ({
             value,
-            label: value === "GOOGLE_MEET" || value === "TEAMS" ? `${label} (Coming soon)` : label,
-            disabled: value === "GOOGLE_MEET" || value === "TEAMS",
+            label: label,
           }))}
         />
+        {isIntegrationMissing && (
+          <div className="mt-2 text-xs text-red-400">
+            {isZoomSelected && "Connect Zoom first to use it for this event. "}
+            {isMeetSelected && "Connect Google Calendar first to use Meet. "}
+            {isTeamsSelected && "Connect Microsoft Teams first to use Teams. "}
+            <Link href="/dashboard/integrations" className="underline hover:text-red-300">
+              Go to Integrations
+            </Link>
+          </div>
+        )}
       </Field>
 
       {needsLocationValue && (
@@ -469,11 +473,11 @@ function EventForm({
 
 
       {/* Availability days */}
-      <div className="rounded-lg border border-[#2e2e2e] overflow-hidden">
-        <div className="flex items-center justify-between border-b border-[#2e2e2e] px-4 py-3">
+      <div className="rounded-lg border border-border overflow-hidden">
+        <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <div>
             <p className="text-sm font-medium text-white">Availability</p>
-            <p className="text-xs text-[#9a9a9a]">
+            <p className="text-xs text-text-muted">
               {availability.length === 0
                 ? "No availability saved yet — go to Availability settings first"
                 : allActive
@@ -487,14 +491,14 @@ function EventForm({
             <button
               type="button"
               onClick={() => setForm((prev) => ({ ...prev, availabilityDays: [] }))}
-              className="text-xs text-[#c4956a] hover:underline"
+              className="text-xs text-accent hover:underline"
             >
               Select all
             </button>
           )}
         </div>
         {availability.length > 0 ? (
-          <div className="divide-y divide-[#2e2e2e]">
+          <div className="divide-y divide-border">
             {availability.map((day) => {
               const isSelected = allActive ? day.isActive : selectedDays.includes(day.dayOfWeek);
               const isInactive = !day.isActive;
@@ -508,25 +512,25 @@ function EventForm({
                     isInactive
                       ? "cursor-not-allowed opacity-40"
                       : isSelected
-                      ? "bg-[#c4956a]/10 hover:bg-[#c4956a]/15"
-                      : "hover:bg-[#1e1e1e]"
+                      ? "bg-accent/10 hover:bg-accent/15"
+                      : "hover:bg-[#44318D]"
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <span
                       className={`flex h-5 w-5 items-center justify-center rounded text-xs font-medium transition-colors ${
                         isSelected && !isInactive
-                          ? "bg-[#c4956a] text-white"
-                          : "bg-[#2e2e2e] text-[#9a9a9a]"
+                          ? "bg-accent text-white"
+                          : "bg-border text-text-muted"
                       }`}
                     >
                       {isSelected && !isInactive ? <Check className="h-3 w-3" /> : DAY_NAMES[day.dayOfWeek].charAt(0)}
                     </span>
-                    <span className={`text-sm ${isSelected && !isInactive ? "text-white" : "text-[#9a9a9a]"}`}>
+                    <span className={`text-sm ${isSelected && !isInactive ? "text-white" : "text-text-muted"}`}>
                       {DAY_FULL[day.dayOfWeek]}
                     </span>
                   </div>
-                  <span className="text-xs text-[#9a9a9a]">
+                  <span className="text-xs text-text-muted">
                     {isInactive ? "Off" : `${formatTime(day.startTime)} – ${formatTime(day.endTime)}`}
                   </span>
                 </button>
@@ -534,21 +538,21 @@ function EventForm({
             })}
           </div>
         ) : (
-          <div className="px-4 py-6 text-center text-xs text-[#9a9a9a]">
+          <div className="px-4 py-6 text-center text-xs text-text-muted">
             Set up your weekly hours in{" "}
-            <a href="/dashboard/availability" className="text-[#c4956a] hover:underline">
+            <Link href="/dashboard/availability" className="text-accent hover:underline">
               Availability settings
-            </a>{" "}
+            </Link>{" "}
             first.
           </div>
         )}
       </div>
 
       {/* Active toggle */}
-      <div className="flex items-center justify-between rounded-lg border border-[#2e2e2e] px-4 py-3">
+      <div className="flex items-center justify-between rounded-lg border border-border px-4 py-3">
         <div>
           <p className="text-sm text-white">Active</p>
-          <p className="text-xs text-[#9a9a9a]">Allow new bookings for this event type</p>
+          <p className="text-xs text-text-muted">Allow new bookings for this event type</p>
         </div>
         <button
           type="button"
@@ -556,7 +560,7 @@ function EventForm({
           aria-checked={form.isActive}
           onClick={() => set("isActive", !form.isActive)}
           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-            form.isActive ? "bg-[#c4956a]" : "bg-[#2e2e2e]"
+            form.isActive ? "bg-accent" : "bg-border"
           }`}
         >
           <span
@@ -570,8 +574,8 @@ function EventForm({
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button
           onClick={onSubmit}
-          disabled={saving || !form.title.trim()}
-          className="bg-[#c4956a] text-white hover:bg-[#b07d52]"
+          disabled={saving || !form.title.trim() || isIntegrationMissing}
+          className="bg-accent text-white hover:bg-[#b07d52]"
         >
           {saving ? (
             <>
@@ -602,6 +606,7 @@ export default function EventTypesClient() {
   const [editTarget, setEditTarget] = useState<EventType | null>(null);
   const [form, setForm] = useState<FormState>(BLANK_FORM);
   const [saving, setSaving] = useState(false);
+  const [integrations, setIntegrations] = useState<{ provider: IntegrationProvider; isActive: boolean }[]>([]);
 
   // Deleting state (id → true)
   const [deleting, setDeleting] = useState<Record<string, boolean>>({});
@@ -609,11 +614,7 @@ export default function EventTypesClient() {
   // Copy link state
   const [copied, setCopied] = useState<string | null>(null);
 
-  // Toast state
-  const [toast, setToast] = useState<{ msg: string; isError?: boolean } | null>(null);
-
-  const showToast = (msg: string, isError = false) => setToast({ msg, isError });
-  const closeToast = useCallback(() => setToast(null), []);
+  // Toast state removed in favor of react-toastify
 
   // ── Fetch ────────────────────────────────────────────────────────────────────
 
@@ -629,6 +630,7 @@ export default function EventTypesClient() {
         if (evRes.ok) {
           const data = await evRes.json();
           setEventTypes(data.eventTypes ?? []);
+          setIntegrations(data.integrations ?? []);
         }
         if (profileRes.ok) {
           const data = await profileRes.json();
@@ -671,7 +673,7 @@ export default function EventTypesClient() {
       maxBookings: et.maxBookings != null ? String(et.maxBookings) : "",
       maxAdvanceDays: et.maxAdvanceDays != null ? String(et.maxAdvanceDays) : "",
       isActive: et.isActive,
-      color: et.color ?? "#c4956a",
+      color: et.color ?? "#D83F87",
       slug: et.slug,
       availabilityDays: et.availabilityDays ?? [],
     });
@@ -729,7 +731,7 @@ export default function EventTypesClient() {
             : typeof json.error === "object" && json.error
             ? Object.values(json.error as Record<string, string[]>).flat().join("; ")
             : "Failed to save event type";
-        showToast(errMsg, true);
+        toast.error(errMsg as string);
         return;
       }
 
@@ -741,7 +743,7 @@ export default function EventTypesClient() {
         }
       }
 
-      showToast(editTarget ? "Event type updated" : "Event type created");
+      toast.success(editTarget ? "Event type updated" : "Event type created");
       closeModal();
     } finally {
       setSaving(false);
@@ -757,9 +759,9 @@ export default function EventTypesClient() {
       const res = await fetch(`/api/events/delete?id=${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
       setEventTypes((prev) => prev.filter((e) => e.id !== id));
-      showToast("Event type deleted");
+      toast.success("Event type deleted");
     } catch {
-      showToast("Failed to delete event type", true);
+      toast.error("Failed to delete event type");
     } finally {
       setDeleting((prev) => ({ ...prev, [id]: false }));
     }
@@ -779,14 +781,17 @@ export default function EventTypesClient() {
         prev.map((e) => (e.id === et.id ? { ...e, isActive: !e.isActive } : e))
       );
     } catch {
-      showToast("Failed to update status", true);
+      toast.error("Failed to update status");
     }
   }
 
   // ── Copy link ───────────────────────────────────────────────────────────────────
 
   function handleCopy(slug: string) {
-    if (!username) return;
+    if (!username) {
+      toast.error("Please set a username in Settings first.");
+      return;
+    }
     const url = `${window.location.origin}/${username}/${slug}`;
     navigator.clipboard.writeText(url).catch(() => {});
     setCopied(slug);
@@ -798,7 +803,7 @@ export default function EventTypesClient() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="h-6 w-6 animate-spin text-[#c4956a]" />
+        <Loader2 className="h-6 w-6 animate-spin text-accent" />
       </div>
     );
   }
@@ -809,9 +814,9 @@ export default function EventTypesClient() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Event Types</h1>
-          <p className="text-sm text-[#9a9a9a]">Create booking links and manage your event templates.</p>
+          <p className="text-sm text-text-muted">Create booking links and manage your event templates.</p>
         </div>
-        <Button onClick={openCreate} className="bg-[#c4956a] text-white hover:bg-[#b07d52]">
+        <Button onClick={openCreate} className="bg-accent text-white hover:bg-[#b07d52]">
           <Plus className="mr-2 h-4 w-4" />
           New event type
         </Button>
@@ -821,12 +826,12 @@ export default function EventTypesClient() {
       {eventTypes.length === 0 ? (
         <Card className="mt-6">
           <CardContent className="flex flex-col items-center justify-center py-20">
-            <Link2 className="mb-4 h-12 w-12 text-[#2e2e2e]" />
+            <Link2 className="mb-4 h-12 w-12 text-border" />
             <p className="text-sm font-medium text-white">No event types yet</p>
-            <p className="mt-1 text-xs text-[#9a9a9a]">Create your first booking link to share with others.</p>
+            <p className="mt-1 text-xs text-text-muted">Create your first booking link to share with others.</p>
             <Button
               onClick={openCreate}
-              className="mt-6 bg-[#c4956a] text-white hover:bg-[#b07d52]"
+              className="mt-6 bg-accent text-white hover:bg-[#b07d52]"
             >
               <Plus className="mr-2 h-4 w-4" />
               New event type
@@ -838,12 +843,12 @@ export default function EventTypesClient() {
           {eventTypes.map((et) => (
             <div
               key={et.id}
-              className="flex items-center gap-4 rounded-xl border border-[#2e2e2e] bg-[#181818] px-5 py-4 transition-colors hover:border-[#3e3e3e]"
+              className="flex items-center gap-4 rounded-xl border border-border bg-bg-secondary px-5 py-4 transition-colors hover:border-[#3e3e3e]"
             >
               {/* Color indicator */}
               <div
                 className="h-10 w-1 flex-shrink-0 rounded-full"
-                style={{ backgroundColor: et.color ?? "#c4956a" }}
+                style={{ backgroundColor: et.color ?? "#D83F87" }}
               />
 
               {/* Details */}
@@ -851,15 +856,15 @@ export default function EventTypesClient() {
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-white">{et.title}</span>
                   {!et.isActive && (
-                    <span className="rounded-full bg-[#2e2e2e] px-2 py-0.5 text-xs text-[#9a9a9a]">
+                    <span className="rounded-full bg-border px-2 py-0.5 text-xs text-text-muted">
                       Inactive
                     </span>
                   )}
-                  <span className="rounded-full border border-[#2e2e2e] px-2 py-0.5 text-xs text-[#9a9a9a]">
+                  <span className="rounded-full border border-border px-2 py-0.5 text-xs text-text-muted">
                     {KIND_LABELS[et.kind]}
                   </span>
                 </div>
-                <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-[#9a9a9a]">
+                <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-text-muted">
                   <span className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
                     {durationLabel(et.duration)}
@@ -872,13 +877,13 @@ export default function EventTypesClient() {
                     <span>Max {et.maxBookings} bookings</span>
                   )}
                   {username && (
-                    <span className="text-[#c4956a]">
+                    <span className="text-accent">
                       /{username}/{et.slug}
                     </span>
                   )}
                 </div>
                 {et.description && (
-                  <p className="mt-1 truncate text-xs text-[#9a9a9a]">{et.description}</p>
+                  <p className="mt-1 truncate text-xs text-text-muted">{et.description}</p>
                 )}
               </div>
 
@@ -892,7 +897,7 @@ export default function EventTypesClient() {
                   title={et.isActive ? "Deactivate" : "Activate"}
                   onClick={() => handleToggleActive(et)}
                   className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                    et.isActive ? "bg-[#c4956a]" : "bg-[#2e2e2e]"
+                    et.isActive ? "bg-accent" : "bg-border"
                   }`}
                 >
                   <span
@@ -902,28 +907,42 @@ export default function EventTypesClient() {
                   />
                 </button>
 
+                {/* View event link */}
+                <Link
+                  href={username ? `/${username}/${et.slug}` : "#"}
+                  target={username ? "_blank" : undefined}
+                  onClick={(e) => {
+                    if (!username) {
+                      e.preventDefault();
+                      toast.error("Please set a username in Settings first.");
+                    }
+                  }}
+                  title="View booking page"
+                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
+                >
+                  <Link2 className="h-4 w-4" />
+                </Link>
+
                 {/* Copy link */}
-                {username && (
-                  <button
-                    type="button"
-                    title="Copy booking link"
-                    onClick={() => handleCopy(et.slug)}
-                    className="rounded-lg p-2 text-[#9a9a9a] transition-colors hover:bg-[#2e2e2e] hover:text-white"
-                  >
-                    {copied === et.slug ? (
-                      <Check className="h-4 w-4 text-[#c4956a]" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </button>
-                )}
+                <button
+                  type="button"
+                  title="Copy booking link"
+                  onClick={() => handleCopy(et.slug)}
+                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
+                >
+                  {copied === et.slug ? (
+                    <Check className="h-4 w-4 text-accent" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
 
                 {/* Edit */}
                 <button
                   type="button"
                   title="Edit"
                   onClick={() => openEdit(et)}
-                  className="rounded-lg p-2 text-[#9a9a9a] transition-colors hover:bg-[#2e2e2e] hover:text-white"
+                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
@@ -934,7 +953,7 @@ export default function EventTypesClient() {
                   title="Delete"
                   onClick={() => handleDelete(et.id)}
                   disabled={deleting[et.id]}
-                  className="rounded-lg p-2 text-[#9a9a9a] transition-colors hover:bg-red-950 hover:text-red-400 disabled:opacity-50"
+                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-red-950 hover:text-red-400 disabled:opacity-50"
                 >
                   {deleting[et.id] ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -961,13 +980,9 @@ export default function EventTypesClient() {
           saving={saving}
           isEdit={!!editTarget}
           availability={availability}
+          integrations={integrations}
         />
       </Modal>
-
-      {/* Toast */}
-      {toast && (
-        <Toast msg={toast.msg} isError={toast.isError} onClose={closeToast} />
-      )}
     </>
   );
 }

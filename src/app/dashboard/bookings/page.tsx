@@ -78,7 +78,7 @@ export default async function BookingsPage() {
       cancelToken:     b.cancelToken,
       eventType: {
         title:    b.eventType.title,
-        color:    b.eventType.color ?? "#c4956a",
+        color:    b.eventType.color ?? "#D83F87",
         duration: b.eventType.duration,
         teamName: b.eventType.team?.name ?? null,
       },

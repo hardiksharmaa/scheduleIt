@@ -27,7 +27,7 @@ const createSchema = z.object({
   maxBookings: z.number().int().min(1).optional().nullable(),
   maxAdvanceDays: z.number().int().min(1).max(730).optional().nullable(),
   isActive: z.boolean().default(true),
-  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default("#c4956a"),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default("#D83F87"),
   slug: z.string().max(100).optional().nullable(),
   availabilityDays: z.array(z.number().int().min(0).max(6)).default([]),
 });

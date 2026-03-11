@@ -145,7 +145,7 @@ export async function GET(req: NextRequest) {
     if (!etMap[key]) {
       etMap[key] = {
         title: b.eventType.title,
-        color: b.eventType.color ?? "#c4956a",
+        color: b.eventType.color ?? "#D83F87",
         count: 0,
       };
     }
@@ -172,7 +172,7 @@ export async function GET(req: NextRequest) {
 
   // ── Status breakdown ──────────────────────────────────────────────────────
   const statusBreakdown = [
-    { status: "Confirmed",  count: confirmed, color: "#c4956a" },
+    { status: "Confirmed",  count: confirmed, color: "#D83F87" },
     { status: "Completed",  count: completed, color: "#4ade80" },
     { status: "Cancelled",  count: cancelled, color: "#f87171" },
     { status: "Pending",    count: pending,   color: "#facc15" },

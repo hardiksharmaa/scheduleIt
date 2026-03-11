@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Loader2, Check, X, Plus, Trash2, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -74,7 +75,7 @@ function TimeSelect({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-3 py-2 text-sm text-white outline-none focus:border-[#c4956a] transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+      className="rounded-lg border border-border bg-bg-primary px-3 py-2 text-sm text-white outline-none focus:border-accent transition-colors disabled:cursor-not-allowed disabled:opacity-40"
     >
       {slots.map((t) => (
         <option key={t} value={t}>
@@ -95,7 +96,7 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
       aria-checked={checked}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ${
-        checked ? "bg-[#c4956a]" : "bg-[#2e2e2e]"
+        checked ? "bg-accent" : "bg-border"
       }`}
     >
       <span
@@ -117,7 +118,7 @@ function DayRow({
   onChange: (updated: DaySchedule) => void;
 }) {
   return (
-    <div className="flex items-center gap-4 py-3 border-b border-[#2e2e2e] last:border-0">
+    <div className="flex items-center gap-4 py-3 border-b border-border last:border-0">
       {/* Toggle */}
       <Toggle
         checked={day.isActive}
@@ -127,7 +128,7 @@ function DayRow({
       {/* Day name */}
       <span
         className={`w-24 shrink-0 text-sm font-medium ${
-          day.isActive ? "text-white" : "text-[#9a9a9a]"
+          day.isActive ? "text-white" : "text-text-muted"
         }`}
       >
         <span className="hidden sm:inline">{DAY_NAMES[day.dayOfWeek]}</span>
@@ -140,7 +141,7 @@ function DayRow({
             value={day.startTime}
             onChange={(v) => onChange({ ...day, startTime: v })}
           />
-          <span className="text-[#9a9a9a] text-sm">–</span>
+          <span className="text-text-muted text-sm">–</span>
           <TimeSelect
             value={day.endTime}
             onChange={(v) => onChange({ ...day, endTime: v })}
@@ -153,7 +154,7 @@ function DayRow({
           )}
         </div>
       ) : (
-        <span className="text-sm text-[#9a9a9a]">Unavailable</span>
+        <span className="text-sm text-text-muted">Unavailable</span>
       )}
     </div>
   );
@@ -166,7 +167,6 @@ export default function AvailabilityClient() {
   const [schedule, setSchedule] = useState<DaySchedule[]>([]);
   const [scheduleLoading, setScheduleLoading] = useState(true);
   const [scheduleSaving, setScheduleSaving] = useState(false);
-  const [scheduleSuccess, setScheduleSuccess] = useState(false);
   const [scheduleError, setScheduleError] = useState<string | null>(null);
 
   // ── Overrides state ───────────────────────────────────────────────────────
@@ -226,7 +226,6 @@ export default function AvailabilityClient() {
 
     setScheduleSaving(true);
     setScheduleError(null);
-    setScheduleSuccess(false);
 
     try {
       const res = await fetch("/api/availability", {
@@ -242,8 +241,7 @@ export default function AvailabilityClient() {
         const msg = typeof data.error === "string" ? data.error : "Failed to save. Please try again.";
         setScheduleError(msg);
       } else {
-        setScheduleSuccess(true);
-        setTimeout(() => setScheduleSuccess(false), 3000);
+        toast.success("Schedule saved successfully!");
       }
     } catch {
       setScheduleError("Network error. Please check your connection.");
@@ -298,6 +296,7 @@ export default function AvailabilityClient() {
         setNewIsBlocked(true);
         setNewStartTime("09:00");
         setNewEndTime("17:00");
+        toast.success("Override added");
       }
     } catch {
       setOverrideError("Network error.");
@@ -313,6 +312,7 @@ export default function AvailabilityClient() {
       const res = await fetch(`/api/availability/overrides?date=${date}`, { method: "DELETE" });
       if (res.ok) {
         setOverrides((prev) => prev.filter((o) => o.date !== date));
+        toast.success("Override removed");
       }
     } finally {
       setDeletingDate(null);
@@ -325,7 +325,7 @@ export default function AvailabilityClient() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">Availability</h1>
-        <p className="text-sm text-[#9a9a9a]">
+        <p className="text-sm text-text-muted">
           Set your weekly working hours and mark specific date exceptions.
         </p>
       </div>
@@ -342,7 +342,7 @@ export default function AvailabilityClient() {
         <CardContent>
           {scheduleLoading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-5 w-5 animate-spin text-[#c4956a]" />
+              <Loader2 className="h-5 w-5 animate-spin text-accent" />
             </div>
           ) : (
             <div>
@@ -363,12 +363,6 @@ export default function AvailabilityClient() {
                 <div className="mt-4 flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   {scheduleError}
-                </div>
-              )}
-              {scheduleSuccess && (
-                <div className="mt-4 flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400">
-                  <Check className="h-4 w-4 shrink-0" />
-                  Schedule saved successfully!
                 </div>
               )}
 
@@ -401,27 +395,27 @@ export default function AvailabilityClient() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {/* Date picker */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">Date</label>
+                <label className="mb-1.5 block text-sm font-medium text-text-muted">Date</label>
                 <input
                   type="date"
                   value={newDate}
                   onChange={(e) => setNewDate(e.target.value)}
                   min={new Date().toISOString().split("T")[0]}
-                  className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-3 py-2 text-sm text-white outline-none focus:border-[#c4956a] transition-colors [color-scheme:dark]"
+                  className="w-full rounded-lg border border-border bg-bg-primary px-3 py-2 text-sm text-white outline-none focus:border-accent transition-colors scheme-dark"
                 />
               </div>
 
               {/* Type: blocked vs custom */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">Type</label>
+                <label className="mb-1.5 block text-sm font-medium text-text-muted">Type</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setNewIsBlocked(true)}
                     className={`flex-1 rounded-lg border px-3 py-2 text-sm transition-colors ${
                       newIsBlocked
-                        ? "border-[#c4956a] bg-[#c4956a]/10 text-[#c4956a]"
-                        : "border-[#2e2e2e] text-[#9a9a9a] hover:border-[#c4956a]/50"
+                        ? "border-accent bg-accent/10 text-accent"
+                        : "border-border text-text-muted hover:border-accent/50"
                     }`}
                   >
                     Blocked
@@ -431,8 +425,8 @@ export default function AvailabilityClient() {
                     onClick={() => setNewIsBlocked(false)}
                     className={`flex-1 rounded-lg border px-3 py-2 text-sm transition-colors ${
                       !newIsBlocked
-                        ? "border-[#c4956a] bg-[#c4956a]/10 text-[#c4956a]"
-                        : "border-[#2e2e2e] text-[#9a9a9a] hover:border-[#c4956a]/50"
+                        ? "border-accent bg-accent/10 text-accent"
+                        : "border-border text-text-muted hover:border-accent/50"
                     }`}
                   >
                     Custom hours
@@ -445,12 +439,12 @@ export default function AvailabilityClient() {
             {!newIsBlocked && (
               <div className="flex flex-wrap items-center gap-3">
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">Start</label>
+                  <label className="mb-1.5 block text-sm font-medium text-text-muted">Start</label>
                   <TimeSelect value={newStartTime} onChange={setNewStartTime} />
                 </div>
-                <div className="mt-6 text-[#9a9a9a]">–</div>
+                <div className="mt-6 text-text-muted">–</div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">End</label>
+                  <label className="mb-1.5 block text-sm font-medium text-text-muted">End</label>
                   <TimeSelect value={newEndTime} onChange={setNewEndTime} min={newStartTime} />
                 </div>
               </div>
@@ -458,8 +452,8 @@ export default function AvailabilityClient() {
 
             {/* Optional reason */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">
-                Reason <span className="text-[#9a9a9a] font-normal">(optional)</span>
+              <label className="mb-1.5 block text-sm font-medium text-text-muted">
+                Reason <span className="text-text-muted font-normal">(optional)</span>
               </label>
               <input
                 type="text"
@@ -467,7 +461,7 @@ export default function AvailabilityClient() {
                 onChange={(e) => setNewReason(e.target.value)}
                 placeholder="e.g. Public holiday, vacation…"
                 maxLength={200}
-                className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-3 py-2 text-sm text-white placeholder:text-[#9a9a9a] outline-none focus:border-[#c4956a] transition-colors"
+                className="w-full rounded-lg border border-border bg-bg-primary px-3 py-2 text-sm text-white placeholder:text-text-muted outline-none focus:border-accent transition-colors"
               />
             </div>
 
@@ -491,19 +485,19 @@ export default function AvailabilityClient() {
           {/* Existing overrides list */}
           {overridesLoading ? (
             <div className="flex justify-center py-4">
-              <Loader2 className="h-4 w-4 animate-spin text-[#9a9a9a]" />
+              <Loader2 className="h-4 w-4 animate-spin text-text-muted" />
             </div>
           ) : overrides.length === 0 ? (
-            <p className="text-center text-sm text-[#9a9a9a] py-4">
+            <p className="text-center text-sm text-text-muted py-4">
               No date overrides yet.
             </p>
           ) : (
             <div className="space-y-2">
-              <p className="text-sm font-medium text-[#9a9a9a]">Upcoming overrides</p>
+              <p className="text-sm font-medium text-text-muted">Upcoming overrides</p>
               {overrides.map((o) => (
                 <div
                   key={o.id}
-                  className="flex items-center justify-between gap-4 rounded-lg border border-[#2e2e2e] bg-[#181818] px-4 py-3"
+                  className="flex items-center justify-between gap-4 rounded-lg border border-border bg-bg-secondary px-4 py-3"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
@@ -513,20 +507,20 @@ export default function AvailabilityClient() {
                           Blocked
                         </span>
                       ) : (
-                        <span className="rounded-full bg-[#c4956a]/15 px-2 py-0.5 text-xs text-[#c4956a]">
+                        <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent">
                           {formatTime(o.startTime!)} – {formatTime(o.endTime!)}
                         </span>
                       )}
                     </div>
                     {o.reason && (
-                      <p className="mt-0.5 truncate text-xs text-[#9a9a9a]">{o.reason}</p>
+                      <p className="mt-0.5 truncate text-xs text-text-muted">{o.reason}</p>
                     )}
                   </div>
                   <button
                     type="button"
                     onClick={() => handleDeleteOverride(o.date)}
                     disabled={deletingDate === o.date}
-                    className="shrink-0 rounded p-1 text-[#9a9a9a] hover:text-red-400 transition-colors disabled:opacity-50"
+                    className="shrink-0 rounded p-1 text-text-muted hover:text-red-400 transition-colors disabled:opacity-50"
                     title="Remove override"
                   >
                     {deletingDate === o.date ? (

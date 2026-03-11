@@ -37,7 +37,7 @@ function Avatar({
           src={src}
           alt={name ?? "Avatar"}
           style={{ width: size, height: size }}
-          className="rounded-full object-cover ring-2 ring-[#2e2e2e]"
+          className="rounded-full object-cover ring-2 ring-border"
         />
       );
     }
@@ -47,14 +47,14 @@ function Avatar({
         alt={name ?? "Avatar"}
         width={size}
         height={size}
-        className="rounded-full object-cover ring-2 ring-[#2e2e2e]"
+        className="rounded-full object-cover ring-2 ring-border"
         style={{ width: size, height: size }}
       />
     );
   }
   return (
     <div
-      className="flex items-center justify-center rounded-full bg-[#c4956a] font-bold text-white ring-2 ring-[#2e2e2e]"
+      className="flex items-center justify-center rounded-full bg-accent font-bold text-white ring-2 ring-border"
       style={{ width: size, height: size, fontSize: size * 0.35 }}
     >
       {initials}
@@ -125,13 +125,13 @@ export default async function EventTypeBookingPage({ params }: PageProps) {
   const location = locationDisplay(eventType.locationType, eventType.locationValue);
 
   return (
-    <div className="min-h-screen bg-[#0c0c0c]">
+    <div className="min-h-screen bg-bg-primary">
       {/* Outer centering wrapper */}
       <div className="mx-auto min-h-screen max-w-5xl md:flex">
 
         {/* ── Left panel: host + event info ─────────────────────────────── */}
         <aside className="md:sticky md:top-0 md:h-screen md:w-[320px] md:shrink-0 md:overflow-y-auto"
-          style={{ borderRight: "1px solid #1e1e1e" }}>
+          style={{ borderRight: "1px solid #44318D" }}>
           <div className="flex h-full flex-col justify-between px-8 py-12">
             <div>
               {/* Avatar + name */}
@@ -139,7 +139,7 @@ export default async function EventTypeBookingPage({ params }: PageProps) {
                 <Avatar picture={user.picture} image={user.image} name={user.name} size={42} />
                 <div>
                   <p className="text-sm font-semibold text-white">{user.name}</p>
-                  <p className="text-xs" style={{ color: "#555" }}>@{user.username}</p>
+                  <p className="text-xs" style={{ color: "#A4B3B6" }}>@{user.username}</p>
                 </div>
               </div>
 
@@ -147,14 +147,14 @@ export default async function EventTypeBookingPage({ params }: PageProps) {
               <div className="flex items-start gap-3">
                 <div
                   className="mt-2 h-full w-0.5 shrink-0 self-stretch rounded-full"
-                  style={{ backgroundColor: eventType.color ?? "#c4956a", minHeight: 24 }}
+                  style={{ backgroundColor: eventType.color ?? "#D83F87", minHeight: 24 }}
                 />
                 <div>
                   <h1 className="text-2xl font-bold leading-snug text-white">
                     {eventType.title}
                   </h1>
                   {eventType.description && (
-                    <p className="mt-2.5 text-sm leading-relaxed" style={{ color: "#9a9a9a" }}>
+                    <p className="mt-2.5 text-sm leading-relaxed" style={{ color: "#A4B3B6" }}>
                       {eventType.description}
                     </p>
                   )}
@@ -162,26 +162,26 @@ export default async function EventTypeBookingPage({ params }: PageProps) {
               </div>
 
               {/* Divider */}
-              <div className="my-7" style={{ borderTop: "1px solid #1e1e1e" }} />
+              <div className="my-7" style={{ borderTop: "1px solid #44318D" }} />
 
               {/* Meta */}
               <div className="space-y-3.5">
-                <div className="flex items-center gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                  <Clock className="h-4 w-4 shrink-0" style={{ color: "#c4956a" }} />
+                <div className="flex items-center gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                  <Clock className="h-4 w-4 shrink-0" style={{ color: "#D83F87" }} />
                   <span>{durationLabel(eventType.duration)}</span>
                 </div>
-                <div className="flex items-start gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                  <span className="mt-0.5 shrink-0" style={{ color: "#c4956a" }}>{location.icon}</span>
+                <div className="flex items-start gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                  <span className="mt-0.5 shrink-0" style={{ color: "#D83F87" }}>{location.icon}</span>
                   <div>
                     <span>{location.label}</span>
                     {location.detail && (
-                      <p className="mt-0.5 text-xs" style={{ color: "#555" }}>{location.detail}</p>
+                      <p className="mt-0.5 text-xs" style={{ color: "#A4B3B6" }}>{location.detail}</p>
                     )}
                   </div>
                 </div>
                 {eventType.minNotice > 0 && (
-                  <div className="flex items-center gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                    <Globe className="h-4 w-4 shrink-0" style={{ color: "#c4956a" }} />
+                  <div className="flex items-center gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                    <Globe className="h-4 w-4 shrink-0" style={{ color: "#D83F87" }} />
                     <span>
                       {eventType.minNotice < 60
                         ? `${eventType.minNotice} min`
@@ -191,8 +191,8 @@ export default async function EventTypeBookingPage({ params }: PageProps) {
                   </div>
                 )}
                 {eventType.maxBookings && (
-                  <div className="flex items-center gap-3 text-sm" style={{ color: "#9a9a9a" }}>
-                    <Calendar className="h-4 w-4 shrink-0" style={{ color: "#c4956a" }} />
+                  <div className="flex items-center gap-3 text-sm" style={{ color: "#A4B3B6" }}>
+                    <Calendar className="h-4 w-4 shrink-0" style={{ color: "#D83F87" }} />
                     <span>Up to {eventType.maxBookings} attendees</span>
                   </div>
                 )}
@@ -204,7 +204,7 @@ export default async function EventTypeBookingPage({ params }: PageProps) {
               <Link
                 href="/"
                 className="inline-flex items-center gap-1.5 text-xs transition-colors hover:text-white"
-                style={{ color: "#444" }}
+                style={{ color: "#A4B3B6" }}
               >
                 <Calendar className="h-3 w-3" />
                 Powered by ScheduleIt

@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { Arvo } from "next/font/google";
+import { Inter, Oswald } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const arvo = Arvo({
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-arvo",
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -23,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={arvo.variable}>
+    <html lang="en" className={`${inter.variable} ${oswald.variable}`}>
       <body className="antialiased"><Providers>{children}</Providers></body>
     </html>
   );

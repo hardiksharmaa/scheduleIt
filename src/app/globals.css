@@ -1,22 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #0c0c0c;
-  --bg-secondary: #181818;
-  --accent: #c4956a;
+  /* Restored Color Palette */
+  --bg-primary: #2A1B3D;
+  --bg-secondary: #44318D;
+  --accent: #D83F87;
+  --accent-secondary: #E98074;
   --text-light: #ffffff;
-  --text-muted: #9a9a9a;
-  --border-color: #2e2e2e;
+  --text-muted: #A4B3B6;
+  --border-color: rgba(68, 49, 141, 0.4);
+  --radius: 0.75rem; 
 }
 
 @theme inline {
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
   --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
   --color-text-light: var(--text-light);
   --color-text-muted: var(--text-muted);
   --color-border: var(--border-color);
-  --font-arvo: "Arvo", "Inter", system-ui, sans-serif;
+  --font-heading: var(--font-oswald);
+  --font-sans: "Inter", system-ui, sans-serif;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -26,9 +35,14 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-light);
-  font-family: var(--font-arvo), "Inter", system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
 }
 
 ::-webkit-scrollbar {
@@ -39,9 +53,17 @@ body {
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: var(--bg-secondary);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }

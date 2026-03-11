@@ -48,14 +48,14 @@ function toDateStr(d: Date) {
 // ─── Recharts theme helpers ─────────────────────────────────────────────────────
 
 const TOOLTIP_STYLE = {
-  backgroundColor: "#111",
-  border: "1px solid #2a2a2a",
+  backgroundColor: "#2A1B3D",
+  border: "1px solid #44318D",
   borderRadius: 8,
   color: "#fff",
   fontSize: 12,
 };
-const AXIS_TICK_STYLE = { fill: "#555", fontSize: 11 };
-const GRID_COLOR = "#1e1e1e";
+const AXIS_TICK_STYLE = { fill: "#A4B3B6", fontSize: 11 };
+const GRID_COLOR = "#44318D";
 
 // ─── Stat card ──────────────────────────────────────────────────────────────────
 
@@ -73,7 +73,7 @@ function StatCard({
   return (
     <div
       className="relative overflow-hidden rounded-2xl p-5 flex flex-col gap-3"
-      style={{ background: "#111", border: "1px solid #1e1e1e" }}
+      style={{ background: "#2A1B3D", border: "1px solid #44318D" }}
     >
       {/* accent glow */}
       <div
@@ -81,7 +81,7 @@ function StatCard({
         style={{ background: accent, filter: "blur(20px)" }}
       />
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>
+        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>
           {label}
         </span>
         <div
@@ -93,13 +93,13 @@ function StatCard({
       </div>
       <div>
         <p className="text-3xl font-bold tracking-tight text-white">{value}</p>
-        {sub && <p className="mt-0.5 text-xs" style={{ color: "#555" }}>{sub}</p>}
+        {sub && <p className="mt-0.5 text-xs" style={{ color: "#A4B3B6" }}>{sub}</p>}
       </div>
       {trendLabel && (
         <div className="flex items-center gap-1">
           {trend === "up"   && <TrendingUp   className="h-3.5 w-3.5" style={{ color: "#4ade80" }} />}
           {trend === "down" && <TrendingDown  className="h-3.5 w-3.5" style={{ color: "#f87171" }} />}
-          <span className="text-xs" style={{ color: trend === "up" ? "#4ade80" : trend === "down" ? "#f87171" : "#9a9a9a" }}>
+          <span className="text-xs" style={{ color: trend === "up" ? "#4ade80" : trend === "down" ? "#f87171" : "#A4B3B6" }}>
             {trendLabel}
           </span>
         </div>
@@ -112,10 +112,10 @@ function StatCard({
 
 function Section({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl p-5" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+    <div className="rounded-2xl p-5" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
       <div className="mb-5">
         <p className="text-sm font-semibold text-white">{title}</p>
-        {sub && <p className="mt-0.5 text-xs" style={{ color: "#555" }}>{sub}</p>}
+        {sub && <p className="mt-0.5 text-xs" style={{ color: "#A4B3B6" }}>{sub}</p>}
       </div>
       {children}
     </div>
@@ -129,7 +129,7 @@ function CustomTooltip({ active, payload, label, formatter }: any) {
   if (!active || !payload?.length) return null;
   return (
     <div style={TOOLTIP_STYLE} className="px-3 py-2 shadow-xl">
-      <p className="mb-1 text-xs font-semibold" style={{ color: "#9a9a9a" }}>{label}</p>
+      <p className="mb-1 text-xs font-semibold" style={{ color: "#A4B3B6" }}>{label}</p>
       {payload.map((p: { name: string; value: number; color: string }) => (
         <div key={p.name} className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full" style={{ background: p.color }} />
@@ -149,7 +149,7 @@ function DonutLabel({ cx, cy, total }: any) {
   return (
     <>
       <text x={cx} y={cy - 8} textAnchor="middle" fill="#fff" fontSize={22} fontWeight={700}>{total}</text>
-      <text x={cx} y={cy + 12} textAnchor="middle" fill="#555" fontSize={11}>total</text>
+      <text x={cx} y={cy + 12} textAnchor="middle" fill="#A4B3B6" fontSize={11}>total</text>
     </>
   );
 }
@@ -158,7 +158,7 @@ function DonutLabel({ cx, cy, total }: any) {
 
 function EmptyChart() {
   return (
-    <div className="flex flex-col items-center justify-center py-12" style={{ color: "#333" }}>
+    <div className="flex flex-col items-center justify-center py-12" style={{ color: "#A4B3B6" }}>
       <BarChart3 className="mb-2 h-8 w-8" />
       <p className="text-xs">No data for this period</p>
     </div>
@@ -220,21 +220,21 @@ export default function AnalyticsClient() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Analytics</h1>
-          <p className="mt-0.5 text-sm" style={{ color: "#9a9a9a" }}>
+          <p className="mt-0.5 text-sm" style={{ color: "#A4B3B6" }}>
             Booking metrics and trends for your account
           </p>
         </div>
         <div className="flex items-center gap-2">
           {/* Range presets */}
-          <div className="flex overflow-hidden rounded-xl" style={{ border: "1px solid #1e1e1e" }}>
+          <div className="flex overflow-hidden rounded-xl" style={{ border: "1px solid #44318D" }}>
             {PRESETS.map((p) => (
               <button
                 key={p.days}
                 onClick={() => setDays(p.days as 7 | 30 | 90 | 365)}
                 className="px-3 py-1.5 text-xs font-medium transition-colors"
                 style={{
-                  background: days === p.days ? "#c4956a" : "transparent",
-                  color:      days === p.days ? "#fff"    : "#9a9a9a",
+                  background: days === p.days ? "#D83F87" : "transparent",
+                  color:      days === p.days ? "#fff"    : "#A4B3B6",
                 }}
               >
                 {p.label}
@@ -244,11 +244,11 @@ export default function AnalyticsClient() {
           <button
             onClick={() => fetchData(days)}
             disabled={loading}
-            className="flex h-8 w-8 items-center justify-center rounded-xl transition-colors hover:bg-[#1e1e1e] disabled:opacity-50"
-            style={{ border: "1px solid #1e1e1e" }}
+            className="flex h-8 w-8 items-center justify-center rounded-xl transition-colors hover:bg-[#44318D] disabled:opacity-50"
+            style={{ border: "1px solid #44318D" }}
             title="Refresh"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} style={{ color: "#9a9a9a" }} />
+            <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} style={{ color: "#A4B3B6" }} />
           </button>
         </div>
       </div>
@@ -263,7 +263,7 @@ export default function AnalyticsClient() {
       {/* ── Loading skeleton ─────────────────────────────────────────────── */}
       {loading && !data && (
         <div className="flex items-center justify-center py-32">
-          <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#c4956a" }} />
+          <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#D83F87" }} />
         </div>
       )}
 
@@ -276,7 +276,7 @@ export default function AnalyticsClient() {
               value={ov!.total}
               sub={`${ov!.allTotal} all-time`}
               icon={Calendar}
-              accent="#c4956a"
+              accent="#D83F87"
             />
             <StatCard
               label="Unique guests"
@@ -306,35 +306,35 @@ export default function AnalyticsClient() {
           {/* ── Secondary stats row ──────────────────────────────────────── */}
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl px-5 py-4 flex items-center gap-4"
-              style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+              style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: "#c4956a22", border: "1px solid #c4956a33" }}>
-                <CheckCircle2 className="h-4 w-4" style={{ color: "#c4956a" }} />
+                style={{ background: "#D83F8722", border: "1px solid #D83F8733" }}>
+                <CheckCircle2 className="h-4 w-4" style={{ color: "#D83F87" }} />
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>Confirmed</p>
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Confirmed</p>
                 <p className="text-xl font-bold text-white">{ov!.confirmed}</p>
               </div>
             </div>
             <div className="rounded-2xl px-5 py-4 flex items-center gap-4"
-              style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+              style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
                 style={{ background: "#4ade8022", border: "1px solid #4ade8033" }}>
                 <TrendingUp className="h-4 w-4" style={{ color: "#4ade80" }} />
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>Completed</p>
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Completed</p>
                 <p className="text-xl font-bold text-white">{ov!.completed}</p>
               </div>
             </div>
             <div className="rounded-2xl px-5 py-4 flex items-center gap-4"
-              style={{ background: "#111", border: "1px solid #1e1e1e" }}>
+              style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
                 style={{ background: "#f8717122", border: "1px solid #f8717133" }}>
                 <XCircle className="h-4 w-4" style={{ color: "#f87171" }} />
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#555" }}>Cancelled</p>
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#A4B3B6" }}>Cancelled</p>
                 <p className="text-xl font-bold text-white">{ov!.cancelled}</p>
               </div>
             </div>
@@ -350,8 +350,8 @@ export default function AnalyticsClient() {
                 <AreaChart data={seriesFormatted} margin={{ top: 4, right: 4, left: -28, bottom: 0 }}>
                   <defs>
                     <linearGradient id="gradConfirmed" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%"  stopColor="#c4956a" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#c4956a" stopOpacity={0}    />
+                      <stop offset="5%"  stopColor="#D83F87" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#D83F87" stopOpacity={0}    />
                     </linearGradient>
                     <linearGradient id="gradCancelled" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%"  stopColor="#f87171" stopOpacity={0.2} />
@@ -374,7 +374,7 @@ export default function AnalyticsClient() {
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
-                    wrapperStyle={{ fontSize: 12, color: "#9a9a9a", paddingTop: 8 }}
+                    wrapperStyle={{ fontSize: 12, color: "#A4B3B6", paddingTop: 8 }}
                     iconType="circle"
                     iconSize={8}
                   />
@@ -382,11 +382,11 @@ export default function AnalyticsClient() {
                     type="monotone"
                     dataKey="confirmed"
                     name="Confirmed"
-                    stroke="#c4956a"
+                    stroke="#D83F87"
                     strokeWidth={2}
                     fill="url(#gradConfirmed)"
                     dot={false}
-                    activeDot={{ r: 4, fill: "#c4956a" }}
+                    activeDot={{ r: 4, fill: "#D83F87" }}
                   />
                   <Area
                     type="monotone"
@@ -469,7 +469,7 @@ export default function AnalyticsClient() {
                         <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: s.color }} />
                         <div>
                           <p className="text-xs font-medium text-white">{s.status}</p>
-                          <p className="text-xs" style={{ color: "#555" }}>
+                          <p className="text-xs" style={{ color: "#A4B3B6" }}>
                             {s.count} · {ov!.total > 0 ? Math.round((s.count / ov!.total) * 100) : 0}%
                           </p>
                         </div>
@@ -519,11 +519,11 @@ export default function AnalyticsClient() {
                             <div className="h-2 w-2 shrink-0 rounded-full" style={{ background: et.color }} />
                             <span className="truncate text-xs font-medium text-white">{et.title}</span>
                           </div>
-                          <span className="shrink-0 text-xs tabular-nums" style={{ color: "#555" }}>
+                          <span className="shrink-0 text-xs tabular-nums" style={{ color: "#A4B3B6" }}>
                             {et.count}
                           </span>
                         </div>
-                        <div className="h-1.5 w-full rounded-full" style={{ background: "#1e1e1e" }}>
+                        <div className="h-1.5 w-full rounded-full" style={{ background: "#44318D" }}>
                           <div
                             className="h-1.5 rounded-full transition-all duration-500"
                             style={{ width: `${pct}%`, background: et.color }}
@@ -538,7 +538,7 @@ export default function AnalyticsClient() {
           </div>
 
           {/* ── Footer note ─────────────────────────────────────────────── */}
-          <p className="text-center text-xs" style={{ color: "#333" }}>
+          <p className="text-center text-xs" style={{ color: "#A4B3B6" }}>
             Showing data from{" "}
             {new Date(data.range.from).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}
             {" "}to{" "}

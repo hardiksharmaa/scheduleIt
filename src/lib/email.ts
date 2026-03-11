@@ -134,7 +134,7 @@ function emailWrapper(content: string): string {
           <tr>
             <td style="background:#f8f8f8;border-top:1px solid #e8e8e8;padding:20px 32px;">
               <p style="margin:0;font-size:12px;color:#999999;line-height:1.6;">
-                Sent by <a href="https://scheduleit.app" style="color:#c4956a;text-decoration:none;">ScheduleIt</a>.
+                Sent by <a href="https://scheduleit.app" style="color:#D83F87;text-decoration:none;">ScheduleIt</a>.
                 You are receiving this email because a meeting was scheduled using your ScheduleIt link.
               </p>
             </td>
@@ -156,7 +156,7 @@ function detailRow(icon: string, label: string, value: string): string {
           <td style="width:28px;padding-top:1px;vertical-align:top;font-size:15px;">${icon}</td>
           <td>
             <div style="font-size:12px;color:#999;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;">${label}</div>
-            <div style="font-size:14px;color:#111;margin-top:2px;font-weight:500;">${value}</div>
+            <div style="font-size:14px;color:#2A1B3D;margin-top:2px;font-weight:500;">${value}</div>
           </td>
         </tr>
       </table>
@@ -196,9 +196,9 @@ function bookingConfirmationGuestHtml(p: BookingEmailParams): string {
     ? `${p.appUrl}/reschedule?token=${p.rescheduleToken}` : null;
 
   const body = `
-    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#111;">Meeting confirmed ✓</h1>
-    <p style="margin:0 0 28px;font-size:15px;color:#555;">
-      Hi ${p.inviteeName}, your meeting with <strong style="color:#111;">${p.hostName}</strong> is booked.
+    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#2A1B3D;">Meeting confirmed ✓</h1>
+    <p style="margin:0 0 28px;font-size:15px;color:#A4B3B6;">
+      Hi ${p.inviteeName}, your meeting with <strong style="color:#2A1B3D;">${p.hostName}</strong> is booked.
     </p>
 
     <!-- Details card -->
@@ -208,8 +208,8 @@ function bookingConfirmationGuestHtml(p: BookingEmailParams): string {
         <table cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td style="padding-bottom:12px;border-bottom:1px solid #e8e8e8;margin-bottom:12px;">
-              <div style="font-size:11px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">Event</div>
-              <div style="font-size:18px;font-weight:700;color:#111;margin-top:4px;">${p.eventTitle}</div>
+              <div style="font-size:11px;color:#A4B3B6;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;">Event</div>
+              <div style="font-size:18px;font-weight:700;color:#2A1B3D;margin-top:4px;">${p.eventTitle}</div>
             </td>
           </tr>
           <tr><td style="padding-top:12px;">
@@ -229,7 +229,7 @@ function bookingConfirmationGuestHtml(p: BookingEmailParams): string {
       <a href="${p.location}" style="display:inline-block;padding:10px 22px;background:#1a73e8;color:#ffffff;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
         🎥 Join Meeting
       </a>
-      <div style="margin-top:6px;font-size:11px;color:#aaa;word-break:break-all;">${p.location}</div>
+      <div style="margin-top:6px;font-size:11px;color:#A4B3B6;word-break:break-all;">${p.location}</div>
     </div>
     ` : ""}
 
@@ -237,8 +237,8 @@ function bookingConfirmationGuestHtml(p: BookingEmailParams): string {
     <p style="margin:0 0 12px;font-size:13px;color:#777;">Need to change your plans?</p>
     <table cellpadding="0" cellspacing="0">
       <tr>
-        ${rescheduleLink ? `<td style="padding-right:8px;"><a href="${rescheduleLink}" style="display:inline-block;padding:9px 18px;background:#111;color:#fff;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">Reschedule</a></td>` : ""}
-        ${cancelLink ? `<td><a href="${cancelLink}" style="display:inline-block;padding:9px 18px;background:#fff;border:1px solid #ddd;color:#555;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">Cancel</a></td>` : ""}
+        ${rescheduleLink ? `<td style="padding-right:8px;"><a href="${rescheduleLink}" style="display:inline-block;padding:9px 18px;background:#2A1B3D;color:#fff;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">Reschedule</a></td>` : ""}
+        ${cancelLink ? `<td><a href="${cancelLink}" style="display:inline-block;padding:9px 18px;background:#fff;border:1px solid #ddd;color:#A4B3B6;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">Cancel</a></td>` : ""}
       </tr>
     </table>
     ` : ""}
@@ -253,10 +253,10 @@ function bookingConfirmationHostHtml(p: BookingEmailParams): string {
   const tz      = tzAbbr(p.timezone);
 
   const body = `
-    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#111;">New booking received</h1>
-    <p style="margin:0 0 28px;font-size:15px;color:#555;">
-      <strong style="color:#111;">${p.inviteeName}</strong> booked
-      <strong style="color:#c4956a;">${p.eventTitle}</strong> with you.
+    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#2A1B3D;">New booking received</h1>
+    <p style="margin:0 0 28px;font-size:15px;color:#A4B3B6;">
+      <strong style="color:#2A1B3D;">${p.inviteeName}</strong> booked
+      <strong style="color:#D83F87;">${p.eventTitle}</strong> with you.
     </p>
 
     <table width="100%" cellpadding="0" cellspacing="0"
@@ -277,12 +277,12 @@ function bookingConfirmationHostHtml(p: BookingEmailParams): string {
       <a href="${p.location}" style="display:inline-block;padding:10px 22px;background:#1a73e8;color:#ffffff;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
         🎥 Join Meeting
       </a>
-      <div style="margin-top:6px;font-size:11px;color:#aaa;word-break:break-all;">${p.location}</div>
+      <div style="margin-top:6px;font-size:11px;color:#A4B3B6;word-break:break-all;">${p.location}</div>
     </div>
     ` : ""}
 
     <a href="${p.appUrl}/dashboard/bookings"
-      style="display:inline-block;padding:10px 20px;background:#c4956a;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+      style="display:inline-block;padding:10px 20px;background:#D83F87;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
       View in Dashboard →
     </a>
   `;
@@ -311,9 +311,9 @@ export function reminderEmailHtml(p: ReminderEmailParams): string {
   const tz      = tzAbbr(p.timezone);
 
   const body = `
-    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#111;">Your meeting is in 1 hour ⏰</h1>
-    <p style="margin:0 0 28px;font-size:15px;color:#555;">
-      Just a reminder about your upcoming meeting with <strong style="color:#111;">${p.hostName}</strong>.
+    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#2A1B3D;">Your meeting is in 1 hour ⏰</h1>
+    <p style="margin:0 0 28px;font-size:15px;color:#A4B3B6;">
+      Just a reminder about your upcoming meeting with <strong style="color:#2A1B3D;">${p.hostName}</strong>.
     </p>
 
     <table width="100%" cellpadding="0" cellspacing="0"
@@ -323,13 +323,13 @@ export function reminderEmailHtml(p: ReminderEmailParams): string {
           ${detailRow("📌", "Event", `<strong>${p.eventTitle}</strong>`)}
           ${detailRow("📅", "Date", dateStr)}
           ${detailRow("🕐", "Time", `${fromStr} – ${toStr} ${tz}`)}
-          ${p.location ? detailRow("📍", "Join link", `<a href="${p.location}" style="color:#c4956a;font-weight:600;">Join meeting</a>`) : ""}
+          ${p.location ? detailRow("📍", "Join link", `<a href="${p.location}" style="color:#D83F87;font-weight:600;">Join meeting</a>`) : ""}
         </table>
       </td></tr>
     </table>
 
     ${p.location ? `
-    <a href="${p.location}" style="display:inline-block;padding:10px 20px;background:#c4956a;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+    <a href="${p.location}" style="display:inline-block;padding:10px 20px;background:#D83F87;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
       Join Meeting →
     </a>` : ""}
   `;
@@ -368,8 +368,8 @@ export function cancellationEmailHtml(
     : `<strong>${cancelledByLabel}</strong> cancelled your <strong>${p.eventTitle}</strong> meeting.`;
 
   const body = `
-    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#111;">${headline}</h1>
-    <p style="margin:0 0 28px;font-size:15px;color:#555;">${subtext}</p>
+    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#2A1B3D;">${headline}</h1>
+    <p style="margin:0 0 28px;font-size:15px;color:#A4B3B6;">${subtext}</p>
 
     <table width="100%" cellpadding="0" cellspacing="0"
       style="background:#fff5f5;border:1px solid #fecaca;border-radius:8px;padding:20px 24px;margin-bottom:28px;">
@@ -385,9 +385,9 @@ export function cancellationEmailHtml(
     ${!isHost ? `
     <p style="font-size:14px;color:#777;">
       If you'd like to schedule a new meeting, you can visit
-      <a href="${p.appUrl}" style="color:#c4956a;">ScheduleIt</a> to find a new time.
+      <a href="${p.appUrl}" style="color:#D83F87;">ScheduleIt</a> to find a new time.
     </p>` : `
-    <a href="${p.appUrl}/dashboard/bookings" style="display:inline-block;padding:10px 20px;background:#c4956a;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+    <a href="${p.appUrl}/dashboard/bookings" style="display:inline-block;padding:10px 20px;background:#D83F87;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
       View Dashboard →
     </a>`}
   `;
@@ -425,8 +425,8 @@ export function rescheduleEmailHtml(
   const headline = isHost ? `${p.inviteeName} rescheduled their meeting` : `Your meeting has been rescheduled`;
 
   const body = `
-    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#111;">${headline}</h1>
-    <p style="margin:0 0 28px;font-size:15px;color:#555;">
+    <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#2A1B3D;">${headline}</h1>
+    <p style="margin:0 0 28px;font-size:15px;color:#A4B3B6;">
       ${isHost
         ? `${p.inviteeName} rescheduled <strong>${p.eventTitle}</strong>.`
         : `Your <strong>${p.eventTitle}</strong> with <strong>${p.hostName}</strong> has been moved.`
@@ -436,7 +436,7 @@ export function rescheduleEmailHtml(
     <table width="100%" cellpadding="0" cellspacing="0"
       style="background:#f9f9f9;border:1px solid #e8e8e8;border-radius:8px;padding:20px 24px;margin-bottom:10px;">
       <tr><td>
-        <div style="font-size:11px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Previous time</div>
+        <div style="font-size:11px;color:#A4B3B6;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Previous time</div>
         <div style="font-size:14px;color:#999;text-decoration:line-through;">${oldDate} at ${oldTime} ${tz}</div>
       </td></tr>
     </table>
@@ -448,16 +448,16 @@ export function rescheduleEmailHtml(
         <table cellpadding="0" cellspacing="0" width="100%">
           ${detailRow("📅", "Date", newDate)}
           ${detailRow("🕐", "Time", `${newFrom} – ${newTo} ${tz}`)}
-          ${p.location ? detailRow("📍", "Location", `<a href="${p.location}" style="color:#c4956a;">${p.location}</a>`) : ""}
+          ${p.location ? detailRow("📍", "Location", `<a href="${p.location}" style="color:#D83F87;">${p.location}</a>`) : ""}
         </table>
       </td></tr>
     </table>
 
     ${!isHost && p.cancelToken ? `
-    <a href="${p.appUrl}/cancel?token=${p.cancelToken}" style="display:inline-block;padding:9px 18px;background:#fff;border:1px solid #ddd;color:#555;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
+    <a href="${p.appUrl}/cancel?token=${p.cancelToken}" style="display:inline-block;padding:9px 18px;background:#fff;border:1px solid #ddd;color:#A4B3B6;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
       Cancel instead
     </a>` : !isHost ? "" : `
-    <a href="${p.appUrl}/dashboard/bookings" style="display:inline-block;padding:10px 20px;background:#c4956a;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+    <a href="${p.appUrl}/dashboard/bookings" style="display:inline-block;padding:10px 20px;background:#D83F87;color:#000;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
       View Dashboard →
     </a>`}
   `;

@@ -47,10 +47,10 @@ function LoginForm() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="rounded-2xl border border-[#2e2e2e] bg-[#181818] p-8">
+      <div className="rounded-2xl border border-border bg-bg-secondary p-8">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="mt-1 text-sm text-[#9a9a9a]">Sign in to your account</p>
+          <p className="mt-1 text-sm text-text-muted">Sign in to your account</p>
         </div>
 
         {/* Error */}
@@ -64,7 +64,7 @@ function LoginForm() {
         <Button
           type="button"
           variant="outline"
-          className="mb-4 w-full gap-2 border-[#2e2e2e] bg-transparent text-white hover:bg-[#2e2e2e]"
+          className="mb-4 w-full gap-2 border-border bg-transparent text-white hover:bg-border"
           onClick={handleGoogle}
           disabled={loading !== null}
         >
@@ -83,15 +83,15 @@ function LoginForm() {
 
         {/* Divider */}
         <div className="mb-4 flex items-center gap-3">
-          <div className="h-px flex-1 bg-[#2e2e2e]" />
-          <span className="text-xs text-[#9a9a9a]">or</span>
-          <div className="h-px flex-1 bg-[#2e2e2e]" />
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs text-text-muted">or</span>
+          <div className="h-px flex-1 bg-border" />
         </div>
 
         {/* Credentials form */}
         <form onSubmit={handleCredentials} className="space-y-4">
           <div>
-            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">
+            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-text-muted">
               Email
             </label>
             <input
@@ -102,12 +102,12 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-4 py-2.5 text-sm text-white placeholder:text-[#9a9a9a] outline-none focus:border-[#c4956a] transition-colors"
+              className="w-full rounded-lg border border-border bg-bg-primary px-4 py-2.5 text-sm text-white placeholder:text-text-muted outline-none focus:border-accent transition-colors"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-[#9a9a9a]">
+            <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-text-muted">
               Password
             </label>
             <input
@@ -118,7 +118,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full rounded-lg border border-[#2e2e2e] bg-[#0c0c0c] px-4 py-2.5 text-sm text-white placeholder:text-[#9a9a9a] outline-none focus:border-[#c4956a] transition-colors"
+              className="w-full rounded-lg border border-border bg-bg-primary px-4 py-2.5 text-sm text-white placeholder:text-text-muted outline-none focus:border-accent transition-colors"
             />
           </div>
 
@@ -129,9 +129,9 @@ function LoginForm() {
         </form>
 
         {/* Sign up link */}
-        <p className="mt-6 text-center text-sm text-[#9a9a9a]">
+        <p className="mt-6 text-center text-sm text-text-muted">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-[#c4956a] hover:underline">
+          <Link href="/register" className="font-medium text-accent hover:underline">
             Create one
           </Link>
         </p>
