@@ -1,5 +1,5 @@
 
-import Link from "next/link";
+import { Logo } from "@/components/ui/Logo";
 
 export default function AuthLayout({
   children,
@@ -9,9 +9,9 @@ export default function AuthLayout({
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg-primary px-4">
       {/* Logo */}
-      <Link href="/" className="mb-8 flex items-center gap-2">
-        <span className="text-xl font-bold text-white">ScheduleIt</span>
-      </Link>
+      <div className="mb-8">
+        <Logo size="lg" />
+      </div>
 
       {children}
     </div>

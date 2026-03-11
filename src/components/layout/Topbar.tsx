@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { Bell, Search, Settings, LogOut } from "lucide-react";
+import { Bell, Search, Settings, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TopbarUser {
@@ -16,6 +16,7 @@ interface TopbarUser {
 interface TopbarProps {
   title?: string;
   user?: TopbarUser;
+  onMenuToggle?: () => void;
 }
 
 function Initials({ name }: { name: string }) {
@@ -27,7 +28,7 @@ function Initials({ name }: { name: string }) {
   return <>{initials.toUpperCase()}</>;
 }
 
-export function Topbar({ title, user }: TopbarProps) {
+export function Topbar({ title, user, onMenuToggle }: TopbarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -45,6 +46,16 @@ export function Topbar({ title, user }: TopbarProps) {
   return (
     <header className="flex h-16 items-center justify-between bg-transparent px-6 relative z-40">
       <div className="flex items-center gap-3">
+        {/* Hamburger — visible only on mobile/tablet */}
+        {onMenuToggle && (
+          <button
+            onClick={onMenuToggle}
+            className="lg:hidden flex items-center justify-center rounded-lg p-2 text-text-muted hover:text-text-light hover:bg-bg-primary transition-colors"
+            aria-label="Toggle sidebar"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        )}
         {title && (
           <h1 className="text-lg font-semibold text-text-light">{title}</h1>
         )}

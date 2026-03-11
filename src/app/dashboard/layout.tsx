@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { Topbar } from "@/components/layout/Topbar";
+import { DashboardShell } from "@/components/layout/DashboardShell";
 
 export default async function DashboardLayout({
   children,
@@ -31,20 +30,5 @@ export default async function DashboardLayout({
     image: dbUser?.picture ?? dbUser?.image ?? session.user.image ?? null,
   };
 
-  return (
-    <div className="flex h-screen overflow-hidden bg-bg-secondary">
-      <Sidebar user={user} />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Topbar sits flush against the top/right matching Sidebar bg */}
-        <Topbar user={user} />
-        
-        {/* Dashboard inner content panel - scrollable, completely rounded top-left to emulate the reference design */}
-        <div className="flex-1 bg-bg-primary rounded-tl-3xl border-l border-t border-border/50 shadow-2xl overflow-hidden mr-0 mb-0 flex flex-col">
-          <main className="flex-1 overflow-y-auto w-full p-6 md:p-8">
-            {children}
-          </main>
-        </div>
-      </div>
-    </div>
-  );
+  return <DashboardShell user={user}>{children}</DashboardShell>;
 }

@@ -578,7 +578,7 @@ function EventForm({
         <Button
           onClick={onSubmit}
           disabled={saving || !form.title.trim() || isIntegrationMissing}
-          className="bg-accent text-white hover:bg-[#b07d52]"
+          className="bg-accent text-white hover:bg-[#b8306f]"
         >
           {saving ? (
             <>
@@ -819,7 +819,7 @@ export default function EventTypesClient() {
           <h1 className="text-2xl font-bold text-white">Event Types</h1>
           <p className="text-sm text-text-muted">Create booking links and manage your event templates.</p>
         </div>
-        <Button onClick={openCreate} className="bg-accent text-white hover:bg-[#b07d52]">
+        <Button onClick={openCreate} className="bg-accent text-white hover:bg-[#b8306f]">
           <Plus className="mr-2 h-4 w-4" />
           New event type
         </Button>
@@ -834,7 +834,7 @@ export default function EventTypesClient() {
             <p className="mt-1 text-xs text-text-muted">Create your first booking link to share with others.</p>
             <Button
               onClick={openCreate}
-              className="mt-6 bg-accent text-white hover:bg-[#b07d52]"
+              className="mt-6 bg-accent text-white hover:bg-[#b8306f]"
             >
               <Plus className="mr-2 h-4 w-4" />
               New event type

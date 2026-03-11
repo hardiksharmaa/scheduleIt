@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Calendar, Clock, User, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "@/components/ui/Logo";
 
 interface BookingDetails {
   id: string;
@@ -68,8 +69,8 @@ export default function CancelPage({ searchParams }: { searchParams: Promise<{ t
       style={{ background: "#0c0c0c" }}>
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="mb-8 text-center">
-          <Link href="/" className="text-lg font-bold" style={{ color: "#D83F87" }}>ScheduleIt</Link>
+        <div className="mb-8 text-center flex justify-center">
+          <Logo size="md" />
         </div>
 
         <div className="rounded-2xl p-8" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>

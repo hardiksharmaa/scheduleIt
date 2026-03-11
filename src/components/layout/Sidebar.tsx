@@ -14,6 +14,7 @@ import {
   Users,
   Plug,
   LogOut,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +37,8 @@ interface SidebarUser {
 
 interface SidebarProps {
   user?: SidebarUser;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 function Initials({ name }: { name: string }) {
@@ -47,17 +50,25 @@ function Initials({ name }: { name: string }) {
   return <>{initials.toUpperCase()}</>;
 }
 
-export function Sidebar({ user }: SidebarProps) {
+import { Logo } from "@/components/ui/Logo";
+
+export function Sidebar({ user, isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname();
 
-  return (
+  const sidebarContent = (
     <aside className="flex h-screen w-60 flex-col border-r border-border bg-bg-secondary">
-      <div className="flex h-16 items-center px-6">
-        <Link href="/" className="flex items-center">
-          <span className="text-base font-serif font-bold tracking-[0.1em] text-text-light uppercase">
-            ScheduleIt
-          </span>
-        </Link>
+      {/* Header — mobile gets a close button */}
+      <div className="flex h-16 items-center justify-between px-6">
+        <Logo size="sm" />
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="lg:hidden text-text-muted hover:text-text-light transition-colors"
+            aria-label="Close sidebar"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
       {/* Nav */}
@@ -71,6 +82,7 @@ export function Sidebar({ user }: SidebarProps) {
             <Link
               key={href}
               href={href}
+              onClick={onClose}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
                 isActive
@@ -129,5 +141,36 @@ export function Sidebar({ user }: SidebarProps) {
         </div>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop — always visible */}
+      <div className="hidden lg:block">{sidebarContent}</div>
+
+      {/* Mobile/Tablet — overlay drawer */}
+      <div
+        className={cn(
+          "fixed inset-0 z-50 lg:hidden transition-opacity duration-300",
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          onClick={onClose}
+        />
+
+        {/* Drawer */}
+        <div
+          className={cn(
+            "absolute inset-y-0 left-0 transition-transform duration-300 ease-out",
+            isOpen ? "translate-x-0" : "-translate-x-full"
+          )}
+        >
+          {sidebarContent}
+        </div>
+      </div>
+    </>
   );
 }

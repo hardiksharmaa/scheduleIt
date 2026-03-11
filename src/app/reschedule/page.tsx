@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Calendar, Clock, User, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "@/components/ui/Logo";
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -169,8 +170,8 @@ export default function ReschedulePage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16" style={{ background: "#0c0c0c" }}>
       <div className="w-full max-w-lg">
-        <div className="mb-8 text-center">
-          <Link href="/" className="text-lg font-bold" style={{ color: "#D83F87" }}>ScheduleIt</Link>
+        <div className="mb-8 text-center flex justify-center">
+          <Logo size="md" />
         </div>
 
         <div className="rounded-2xl p-8" style={{ background: "#2A1B3D", border: "1px solid #44318D" }}>

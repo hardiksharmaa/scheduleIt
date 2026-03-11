@@ -264,7 +264,6 @@ export default async function DashboardPage() {
           change={bookingsThisWeek > 0 ? `+${bookingsThisWeek} this week` : "0 this week"}
           changePositive={bookingsThisWeek > 0}
           icon={Calendar}
-          accent
           href="/dashboard/bookings"
         />
         <StatCard
