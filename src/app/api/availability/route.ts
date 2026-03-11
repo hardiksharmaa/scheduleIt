@@ -24,15 +24,15 @@ export async function GET() {
     orderBy: { dayOfWeek: "asc" },
   });
 
-  // Fill in defaults for any missing days (Mon–Fri active 09:00–17:00)
+  // Fill in defaults for any missing days (all 7 days active 09:00–17:00)
   const defaults: Record<number, { isActive: boolean; startTime: string; endTime: string }> = {
-    0: { isActive: false, startTime: "09:00", endTime: "17:00" }, // Sun
-    1: { isActive: true, startTime: "09:00", endTime: "17:00" },  // Mon
-    2: { isActive: true, startTime: "09:00", endTime: "17:00" },  // Tue
-    3: { isActive: true, startTime: "09:00", endTime: "17:00" },  // Wed
-    4: { isActive: true, startTime: "09:00", endTime: "17:00" },  // Thu
-    5: { isActive: true, startTime: "09:00", endTime: "17:00" },  // Fri
-    6: { isActive: false, startTime: "09:00", endTime: "17:00" }, // Sat
+    0: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Sun
+    1: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Mon
+    2: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Tue
+    3: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Wed
+    4: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Thu
+    5: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Fri
+    6: { isActive: true, startTime: "09:00", endTime: "17:00" }, // Sat
   };
 
   const schedule = Array.from({ length: 7 }, (_, day) => {

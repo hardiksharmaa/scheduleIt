@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
+import { generateUniqueUsername } from "@/lib/username";
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,12 +30,14 @@ export async function POST(req: NextRequest) {
     }
 
     const hashed = await bcrypt.hash(password, 12);
+    const username = await generateUniqueUsername();
 
     await db.user.create({
       data: {
         name: name ?? null,
         email,
         password: hashed,
+        username,
         availability: {
           create: [0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => ({
             dayOfWeek,

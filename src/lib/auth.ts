@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
+import { generateUniqueUsername } from "@/lib/username";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
@@ -48,6 +49,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  events: {
+    async createUser({ user }) {
+      if (user.id) {
+        const username = await generateUniqueUsername();
+
+        await Promise.all([
+          db.user.update({
+            where: { id: user.id },
+            data: { username },
+          }),
+          db.availability.createMany({
+            data: [0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => ({
+              userId: user.id!,
+              dayOfWeek,
+              isActive: true,
+              startTime: "09:00",
+              endTime: "17:00",
+            })),
+            skipDuplicates: true,
+          }),
+        ]);
+      }
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

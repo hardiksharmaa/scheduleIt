@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 function RegisterForm() {
   const router = useRouter();
@@ -36,7 +37,9 @@ function RegisterForm() {
     const data = await res.json();
 
     if (!res.ok) {
-      setError(data.error ?? "Registration failed.");
+      const msg = data.error ?? "Registration failed.";
+      setError(msg);
+      toast.error(msg);
       setLoading(null);
       return;
     }
@@ -50,8 +53,10 @@ function RegisterForm() {
 
     if (result?.error) {
       setError("Account created but sign-in failed. Please log in.");
+      toast.error("Account created but sign-in failed. Please log in.");
       router.push("/login");
     } else {
+      toast.success("Account created!");
       router.push("/dashboard");
     }
   }

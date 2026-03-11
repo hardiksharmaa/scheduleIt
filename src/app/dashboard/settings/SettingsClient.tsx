@@ -316,6 +316,7 @@ export default function SettingsClient() {
           msg = `Server error (${res.status}). Please try again.`;
         }
         setSaveError(msg);
+        toast.error(msg);
       } else {
         // Refresh profile (non-picture fields); keep picture preview as-is
         setProfile((prev) =>
@@ -352,6 +353,7 @@ export default function SettingsClient() {
     } else {
       setDeleting(false);
       setSaveError("Failed to delete account. Please try again.");
+      toast.error("Failed to delete account. Please try again.");
       setShowDeleteConfirm(false);
     }
   }

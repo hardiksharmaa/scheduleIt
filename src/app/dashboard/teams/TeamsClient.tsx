@@ -5,6 +5,7 @@ import {
   Users, Plus, Trash2, UserPlus, UserMinus, ExternalLink,
   ChevronLeft, Loader2, Copy, Check, Calendar,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -114,10 +115,13 @@ export default function TeamsClient({
         setTeams((prev) => [data.team, ...prev]);
         setCreateForm({ name: "", description: "" });
         setShowCreate(false);
+        toast.success("Team created");
       } else {
-        setCreateError(typeof data.error === "string" ? data.error : "Failed to create team");
+        const msg = typeof data.error === "string" ? data.error : "Failed to create team";
+        setCreateError(msg);
+        toast.error(msg);
       }
-    } catch { setCreateError("Network error"); }
+    } catch { setCreateError("Network error"); toast.error("Network error"); }
     finally { setCreating(false); }
   };
 
@@ -128,6 +132,9 @@ export default function TeamsClient({
     if (res.ok) {
       setTeams((prev) => prev.filter((t) => t.id !== teamId));
       if (selectedTeam?.id === teamId) { setSelectedTeam(null); setView("list"); }
+      toast.success("Team deleted");
+    } else {
+      toast.error("Failed to delete team");
     }
   };
 
@@ -152,10 +159,13 @@ export default function TeamsClient({
         setSelectedTeam(updated);
         setTeams((prev) => prev.map((t) => t.id === selectedTeam.id ? updated : t));
         setAddEmail("");
+        toast.success("Member added");
       } else {
-        setAddMemberError(typeof data.error === "string" ? data.error : "Failed to add member");
+        const msg = typeof data.error === "string" ? data.error : "Failed to add member";
+        setAddMemberError(msg);
+        toast.error(msg);
       }
-    } catch { setAddMemberError("Network error"); }
+    } catch { setAddMemberError("Network error"); toast.error("Network error"); }
     finally { setAddingMember(false); }
   };
 
@@ -168,6 +178,9 @@ export default function TeamsClient({
       const updated = { ...selectedTeam, members: selectedTeam.members.filter((m) => m.userId !== memberId) };
       setSelectedTeam(updated);
       setTeams((prev) => prev.map((t) => t.id === selectedTeam.id ? updated : t));
+      toast.success("Member removed");
+    } else {
+      toast.error("Failed to remove member");
     }
   };
 
@@ -199,10 +212,13 @@ export default function TeamsClient({
         setTeams((prev) => prev.map((t) => t.id === selectedTeam.id ? updated : t));
         setEventForm({ title: "", duration: "30", kind: "ROUND_ROBIN", locationType: "GOOGLE_MEET" });
         setShowNewEvent(false);
+        toast.success("Event type created");
       } else {
-        setCreateEventError(typeof data.error === "string" ? data.error : "Failed to create event type");
+        const msg = typeof data.error === "string" ? data.error : "Failed to create event type";
+        setCreateEventError(msg);
+        toast.error(msg);
       }
-    } catch { setCreateEventError("Network error"); }
+    } catch { setCreateEventError("Network error"); toast.error("Network error"); }
     finally { setCreatingEvent(false); }
   };
 
@@ -215,6 +231,9 @@ export default function TeamsClient({
       const updated = { ...selectedTeam, eventTypes: selectedTeam.eventTypes.filter((e) => e.id !== eventId) };
       setSelectedTeam(updated);
       setTeams((prev) => prev.map((t) => t.id === selectedTeam.id ? updated : t));
+      toast.success("Event type deleted");
+    } else {
+      toast.error("Failed to delete event type");
     }
   };
 

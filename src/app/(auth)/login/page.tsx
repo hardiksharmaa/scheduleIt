@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 function LoginForm() {
   const router = useRouter();
@@ -39,6 +40,7 @@ function LoginForm() {
 
     if (result?.error) {
       setError("Invalid email or password.");
+      toast.error("Invalid email or password.");
       setLoading(null);
     } else {
       router.push(callbackUrl);

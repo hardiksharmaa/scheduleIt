@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Calendar, Clock, MapPin, Mail, User, ExternalLink, XCircle, CheckCircle, AlertCircle } from "lucide-react";
+import { toast } from "react-toastify";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -104,10 +105,12 @@ function BookingCard({ booking, onCancel }: {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bookingId: booking.id, cancelledBy: "host" }),
       });
-      if (res.ok) onCancel(booking.id);
-      else {
+      if (res.ok) {
+        onCancel(booking.id);
+        toast.success("Booking cancelled");
+      } else {
         const j = await res.json().catch(() => ({}));
-        alert(j.error ?? "Failed to cancel booking");
+        toast.error(j.error ?? "Failed to cancel booking");
       }
     } finally {
       setCancelling(false);
