@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Oswald } from "next/font/google";
+import { Bebas_Neue, Inter, Oswald } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -15,6 +15,13 @@ const oswald = Oswald({
   display: "swap",
 });
 
+const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  variable: "--font-bebas-neue",
+  weight: "400",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "ScheduleIt — Smart Appointment Scheduling",
   description:
@@ -27,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${oswald.variable}`}>
+    <html lang="en" className={`${inter.variable} ${oswald.variable} ${bebasNeue.variable}`}>
       <body className="antialiased"><Providers>{children}</Providers></body>
     </html>
   );
