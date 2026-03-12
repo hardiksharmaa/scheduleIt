@@ -18,6 +18,7 @@ model User {
   username      String?   @unique
   timezone      String    @default("UTC")
   password      String?   // hashed, for credentials provider
+  hasSeenWelcome Boolean  @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

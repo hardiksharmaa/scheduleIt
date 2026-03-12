@@ -14,6 +14,7 @@ import {
   Users,
   Plug,
   LogOut,
+  BookOpen,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ const navItems = [
   { label: "Analytics", href: "/dashboard/analytics", icon: BarChart2 },
   { label: "Integrations", href: "/dashboard/integrations", icon: Plug },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
+  { label: "User Guide", href: "/dashboard/guide", icon: BookOpen },
 ];
 
 interface SidebarUser {

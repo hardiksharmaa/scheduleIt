@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
+import { WelcomeModal } from "@/app/dashboard/WelcomeModal";
 
 interface DashboardUser {
   name: string;
@@ -13,9 +14,11 @@ interface DashboardUser {
 export function DashboardShell({
   user,
   children,
+  showWelcome = false,
 }: {
   user: DashboardUser;
   children: React.ReactNode;
+  showWelcome?: boolean;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -40,6 +43,7 @@ export function DashboardShell({
           </main>
         </div>
       </div>
+      {showWelcome && <WelcomeModal />}
     </div>
   );
 }

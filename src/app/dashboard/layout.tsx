@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   const dbUser = session.user.id
     ? await db.user.findUnique({
         where: { id: session.user.id },
-        select: { picture: true, image: true },
+        select: { picture: true, image: true, hasSeenWelcome: true },
       })
     : null;
 
@@ -30,5 +30,9 @@ export default async function DashboardLayout({
     image: dbUser?.picture ?? dbUser?.image ?? session.user.image ?? null,
   };
 
-  return <DashboardShell user={user}>{children}</DashboardShell>;
+  return (
+    <DashboardShell user={user} showWelcome={!dbUser?.hasSeenWelcome}>
+      {children}
+    </DashboardShell>
+  );
 }
