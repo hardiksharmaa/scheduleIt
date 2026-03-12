@@ -606,7 +606,7 @@ export default function SettingsClient() {
               <div>
                 <p className="text-sm font-medium text-white">Delete account</p>
                 <p className="mt-0.5 text-xs text-text-muted">
-                  Permanently deletes your account, event types, bookings and all data. Cannot be undone.
+                  Permanently deletes your account, events, bookings and all data. Cannot be undone.
                 </p>
               </div>
               <Button
@@ -629,7 +629,7 @@ export default function SettingsClient() {
                     This will permanently delete your account.
                   </p>
                   <p className="mt-1 text-xs text-text-muted">
-                    All your event types, bookings, availability settings and integrations will be
+                    All your events, bookings, availability settings and integrations will be
                     removed. This action <strong className="text-white">cannot be undone</strong>.
                   </p>
                 </div>

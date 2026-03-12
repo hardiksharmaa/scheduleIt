@@ -127,7 +127,7 @@ export default function TeamsClient({
 
   // ── Delete team ────────────────────────────────────────────────────────────
   const handleDeleteTeam = async (teamId: string) => {
-    if (!confirm("Delete this team? All members and event types will be removed.")) return;
+    if (!confirm("Delete this team? All members and events will be removed.")) return;
     const res = await fetch(`/api/teams/${teamId}`, { method: "DELETE" });
     if (res.ok) {
       setTeams((prev) => prev.filter((t) => t.id !== teamId));
@@ -212,9 +212,9 @@ export default function TeamsClient({
         setTeams((prev) => prev.map((t) => t.id === selectedTeam.id ? updated : t));
         setEventForm({ title: "", duration: "30", kind: "ROUND_ROBIN", locationType: "GOOGLE_MEET" });
         setShowNewEvent(false);
-        toast.success("Event type created");
+        toast.success("Event created");
       } else {
-        const msg = typeof data.error === "string" ? data.error : "Failed to create event type";
+        const msg = typeof data.error === "string" ? data.error : "Failed to create event";
         setCreateEventError(msg);
         toast.error(msg);
       }
@@ -225,15 +225,15 @@ export default function TeamsClient({
   // ── Delete event type ──────────────────────────────────────────────────────
   const handleDeleteEvent = async (eventId: string) => {
     if (!selectedTeam) return;
-    if (!confirm("Delete this event type?")) return;
+    if (!confirm("Delete this event?")) return;
     const res = await fetch(`/api/teams/${selectedTeam.id}/event-types?id=${eventId}`, { method: "DELETE" });
     if (res.ok) {
       const updated = { ...selectedTeam, eventTypes: selectedTeam.eventTypes.filter((e) => e.id !== eventId) };
       setSelectedTeam(updated);
       setTeams((prev) => prev.map((t) => t.id === selectedTeam.id ? updated : t));
-      toast.success("Event type deleted");
+      toast.success("Event deleted");
     } else {
-      toast.error("Failed to delete event type");
+      toast.error("Failed to delete event");
     }
   };
 
@@ -331,7 +331,7 @@ export default function TeamsClient({
                       <div className="mt-2 flex items-center gap-3 text-xs" style={{ color: "#A4B3B6" }}>
                         <span>{team.members.length} member{team.members.length !== 1 ? "s" : ""}</span>
                         <span>·</span>
-                        <span>{team.eventTypes.length} event type{team.eventTypes.length !== 1 ? "s" : ""}</span>
+                        <span>{team.eventTypes.length} event{team.eventTypes.length !== 1 ? "s" : ""}</span>
                         {team.myRole === "OWNER" && (
                           <><span>·</span><span style={{ color: "#D83F87" }}>Owner</span></>
                         )}
@@ -446,7 +446,7 @@ export default function TeamsClient({
         <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "#44318D" }}>
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" style={{ color: "#D83F87" }} />
-            <span className="text-sm font-semibold text-white">Event types</span>
+            <span className="text-sm font-semibold text-white">Events</span>
             <span className="text-xs" style={{ color: "#A4B3B6" }}>{selectedTeam.eventTypes.length}</span>
           </div>
           {isOwner && (
@@ -525,7 +525,7 @@ export default function TeamsClient({
         {selectedTeam.eventTypes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12" style={{ color: "#A4B3B6" }}>
             <Calendar className="mb-2 h-7 w-7" />
-            <p className="text-sm">No event types yet</p>
+            <p className="text-sm">No events yet</p>
           </div>
         ) : (
           <div className="divide-y" style={{ borderColor: "#2A1B3D" }}>

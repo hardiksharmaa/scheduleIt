@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Event Types", href: "/dashboard/event-types", icon: Link2 },
+  { label: "Events", href: "/dashboard/event-types", icon: Link2 },
   { label: "Bookings", href: "/dashboard/bookings", icon: Calendar },
   { label: "Availability", href: "/dashboard/availability", icon: Clock },
   { label: "Teams", href: "/dashboard/teams", icon: Users },
@@ -58,7 +58,7 @@ export function Sidebar({ user, isOpen = false, onClose }: SidebarProps) {
   const sidebarContent = (
     <aside className="flex h-screen w-60 flex-col border-r border-border bg-bg-secondary">
       {/* Header — mobile gets a close button */}
-      <div className="flex h-16 items-center justify-between px-6">
+      <div className="flex h-16 items-center justify-between px-6 mx-7">
         <Logo size="sm" />
         {onClose && (
           <button
@@ -66,7 +66,7 @@ export function Sidebar({ user, isOpen = false, onClose }: SidebarProps) {
             className="lg:hidden text-text-muted hover:text-text-light transition-colors"
             aria-label="Close sidebar"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 mx-9" />
           </button>
         )}
       </div>

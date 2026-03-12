@@ -128,7 +128,7 @@ function EmptyBookings() {
       </p>
       <Link href="/dashboard/event-types" className="mt-4">
         <Button variant="secondary" size="sm" className="gap-2">
-          <Plus className="h-3.5 w-3.5" /> Create event type
+          <Plus className="h-3.5 w-3.5" /> Create event
         </Button>
       </Link>
     </div>
@@ -188,7 +188,7 @@ export default async function DashboardPage() {
     db.eventType.findMany({
       where: { userId, isActive: true },
       orderBy: { createdAt: "asc" },
-      take: 0,
+      take: 3,
       select: { id: true, title: true, slug: true, duration: true, color: true },
     }),
     db.availability.findFirst({ where: { userId, isActive: true } }),
@@ -212,7 +212,7 @@ export default async function DashboardPage() {
 
   const checklist = [
     {
-      step: "Create your first event type",
+      step: "Create your first event",
       done: eventTypes.length > 0,
       href: "/dashboard/event-types",
     },
@@ -220,11 +220,6 @@ export default async function DashboardPage() {
       step: "Set your availability",
       done: !!availability,
       href: "/dashboard/availability",
-    },
-    {
-      step: "Connect Google Calendar",
-      done: !!calendarIntegration,
-      href: "/dashboard/integrations",
     },
     {
       step: "Share your booking link",
@@ -251,7 +246,7 @@ export default async function DashboardPage() {
         </div>
         <Link href="/dashboard/event-types">
           <Button size="sm" className="gap-2">
-            <Plus className="h-4 w-4" /> New event type
+            <Plus className="h-4 w-4" /> New event
           </Button>
         </Link>
       </div>
@@ -274,7 +269,7 @@ export default async function DashboardPage() {
           href="/dashboard/bookings"
         />
         <StatCard
-          label="Event Types"
+          label="Events"
           value={eventTypes.length.toString()}
           change="Active links"
           icon={Users}
@@ -370,8 +365,7 @@ export default async function DashboardPage() {
 
         {/* Sidebar — 1 col */}
         <div className="flex flex-col gap-4">
-          {/* Getting started (hidden once all done) */}
-          {!allDone && (
+          {/* Getting started */}
             <Card>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -412,13 +406,12 @@ export default async function DashboardPage() {
                 ))}
               </CardContent>
             </Card>
-          )}
 
           {/* Event types */}
           <Card>
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base">Event types</CardTitle>
+                <CardTitle className="text-base">Events</CardTitle>
                 <Link href="/dashboard/event-types">
                   <Button
                     variant="ghost"
@@ -438,7 +431,7 @@ export default async function DashboardPage() {
                 >
                   <Plus className="h-5 w-5 text-text-muted" />
                   <span className="text-sm text-text-muted">
-                    Create your first event type
+                    Create your first event
                   </span>
                 </Link>
               ) : (

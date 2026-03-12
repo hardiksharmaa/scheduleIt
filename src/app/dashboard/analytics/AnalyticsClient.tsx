@@ -504,8 +504,8 @@ export default function AnalyticsClient() {
 
             {/* Top event types */}
             <Section
-              title="Top event types"
-              sub="Most booked event types (excluding cancellations)"
+              title="Top events"
+              sub="Most booked events (excluding cancellations)"
             >
               {data.byEventType.length === 0 ? <EmptyChart /> : (
                 <div className="space-y-3">

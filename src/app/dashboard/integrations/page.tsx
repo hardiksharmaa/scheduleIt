@@ -156,7 +156,7 @@ export default async function IntegrationsPage({ searchParams }: Props) {
               <div>
                 <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>Zoom</div>
                 <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
-                  Automatically create Zoom meetings for video call event types.
+                  Automatically create Zoom meetings for video call events.
                 </div>
               </div>
             </div>
@@ -185,7 +185,7 @@ export default async function IntegrationsPage({ searchParams }: Props) {
               <div>
                 <div style={{ fontWeight: 600, fontSize: 15, color: "#ffffff" }}>Microsoft Teams</div>
                 <div style={{ fontSize: 13, color: "#A4B3B6", marginTop: 2, lineHeight: 1.5 }}>
-                  Automatically create Teams meetings for video call event types.
+                  Automatically create Teams meetings for video call events.
                 </div>
               </div>
             </div>

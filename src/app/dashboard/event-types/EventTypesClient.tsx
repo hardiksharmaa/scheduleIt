@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   Plus,
   Link2,
+  ExternalLink,
   Pencil,
   Trash2,
   Copy,
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tooltip } from "@/components/ui/tooltip";
 import { toast } from "react-toastify";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -381,7 +383,7 @@ function EventForm({
         <Textarea
           value={form.description}
           onChange={(v) => set("description", v)}
-          placeholder="Brief description of this event type…"
+          placeholder="Brief description of this event…"
         />
       </Field>
 
@@ -416,7 +418,7 @@ function EventForm({
         </Field>
 
         {/* Kind */}
-        <Field label="Event Type">
+        <Field label="Event Category">
           <Select<EventTypeKind>
             value={form.kind}
             onChange={(v) => set("kind", v)}
@@ -555,7 +557,7 @@ function EventForm({
       <div className="flex items-center justify-between rounded-lg border border-border px-4 py-3">
         <div>
           <p className="text-sm text-white">Active</p>
-          <p className="text-xs text-text-muted">Allow new bookings for this event type</p>
+          <p className="text-xs text-text-muted">Allow new bookings for this event</p>
         </div>
         <button
           type="button"
@@ -588,7 +590,7 @@ function EventForm({
           ) : isEdit ? (
             "Save changes"
           ) : (
-            "Create event type"
+            "Create event"
           )}
         </Button>
       </div>
@@ -733,7 +735,7 @@ export default function EventTypesClient() {
             ? json.error
             : typeof json.error === "object" && json.error
             ? Object.values(json.error as Record<string, string[]>).flat().join("; ")
-            : "Failed to save event type";
+            : "Failed to save event";
         toast.error(errMsg as string);
         return;
       }
@@ -746,7 +748,7 @@ export default function EventTypesClient() {
         }
       }
 
-      toast.success(editTarget ? "Event type updated" : "Event type created");
+      toast.success(editTarget ? "Event updated" : "Event created");
       closeModal();
     } finally {
       setSaving(false);
@@ -756,15 +758,15 @@ export default function EventTypesClient() {
   // ── Delete ─────────────────────────────────────────────────────────────────────
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this event type? This cannot be undone.")) return;
+    if (!confirm("Delete this event? This cannot be undone.")) return;
     setDeleting((prev) => ({ ...prev, [id]: true }));
     try {
       const res = await fetch(`/api/events/delete?id=${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
       setEventTypes((prev) => prev.filter((e) => e.id !== id));
-      toast.success("Event type deleted");
+      toast.success("Event deleted");
     } catch {
-      toast.error("Failed to delete event type");
+      toast.error("Failed to delete event");
     } finally {
       setDeleting((prev) => ({ ...prev, [id]: false }));
     }
@@ -816,12 +818,12 @@ export default function EventTypesClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Event Types</h1>
+          <h1 className="text-2xl font-bold text-white">Events</h1>
           <p className="text-sm text-text-muted">Create booking links and manage your event templates.</p>
         </div>
         <Button onClick={openCreate} className="bg-accent text-white hover:bg-[#b8306f]">
           <Plus className="mr-2 h-4 w-4" />
-          New event type
+          New event
         </Button>
       </div>
 
@@ -830,14 +832,14 @@ export default function EventTypesClient() {
         <Card className="mt-6">
           <CardContent className="flex flex-col items-center justify-center py-20">
             <Link2 className="mb-4 h-12 w-12 text-border" />
-            <p className="text-sm font-medium text-white">No event types yet</p>
+            <p className="text-sm font-medium text-white">No events yet</p>
             <p className="mt-1 text-xs text-text-muted">Create your first booking link to share with others.</p>
             <Button
               onClick={openCreate}
               className="mt-6 bg-accent text-white hover:bg-[#b8306f]"
             >
               <Plus className="mr-2 h-4 w-4" />
-              New event type
+              New event
             </Button>
           </CardContent>
         </Card>
@@ -891,79 +893,85 @@ export default function EventTypesClient() {
               </div>
 
               {/* Actions */}
-              <div className="flex flex-shrink-0 items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2">
                 {/* Active toggle */}
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={et.isActive}
-                  title={et.isActive ? "Deactivate" : "Activate"}
-                  onClick={() => handleToggleActive(et)}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                    et.isActive ? "bg-accent" : "bg-border"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-3 w-3 transform rounded-full bg-white shadow transition-transform ${
-                      et.isActive ? "translate-x-5" : "translate-x-1"
+                <Tooltip content={et.isActive ? "Deactivate" : "Activate"}>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={et.isActive}
+                    onClick={() => handleToggleActive(et)}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                      et.isActive ? "bg-accent" : "bg-border"
                     }`}
-                  />
-                </button>
+                  >
+                    <span
+                      className={`inline-block h-3 w-3 transform rounded-full bg-white shadow transition-transform ${
+                        et.isActive ? "translate-x-5" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </Tooltip>
 
-                {/* View event link */}
-                <Link
-                  href={username ? `/${username}/${et.slug}` : "#"}
-                  target={username ? "_blank" : undefined}
-                  onClick={(e) => {
-                    if (!username) {
-                      e.preventDefault();
-                      toast.error("Please set a username in Settings first.");
-                    }
-                  }}
-                  title="View booking page"
-                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
-                >
-                  <Link2 className="h-4 w-4" />
-                </Link>
+                {/* View booking page link */}
+                <Tooltip content="Open booking page in new tab">
+                  <Link
+                    href={username ? `/${username}/${et.slug}` : "#"}
+                    target={username ? "_blank" : undefined}
+                    onClick={(e) => {
+                      if (!username) {
+                        e.preventDefault();
+                        toast.error("Please set a username in Settings first.");
+                      }
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:bg-accent/10 hover:border-accent"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Booking Page
+                  </Link>
+                </Tooltip>
 
                 {/* Copy link */}
-                <button
-                  type="button"
-                  title="Copy booking link"
-                  onClick={() => handleCopy(et.slug)}
-                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
-                >
-                  {copied === et.slug ? (
-                    <Check className="h-4 w-4 text-accent" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </button>
+                <Tooltip content={copied === et.slug ? "Copied!" : "Copy booking link"}>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(et.slug)}
+                    className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
+                  >
+                    {copied === et.slug ? (
+                      <Check className="h-4 w-4 text-accent" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
+                </Tooltip>
 
                 {/* Edit */}
-                <button
-                  type="button"
-                  title="Edit"
-                  onClick={() => openEdit(et)}
-                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
-                >
-                  <Pencil className="h-4 w-4" />
-                </button>
+                <Tooltip content="Edit event">
+                  <button
+                    type="button"
+                    onClick={() => openEdit(et)}
+                    className="rounded-lg p-2 text-text-muted transition-colors hover:bg-border hover:text-white"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                </Tooltip>
 
                 {/* Delete */}
-                <button
-                  type="button"
-                  title="Delete"
-                  onClick={() => handleDelete(et.id)}
-                  disabled={deleting[et.id]}
-                  className="rounded-lg p-2 text-text-muted transition-colors hover:bg-red-950 hover:text-red-400 disabled:opacity-50"
-                >
-                  {deleting[et.id] ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Trash2 className="h-4 w-4" />
-                  )}
-                </button>
+                <Tooltip content="Delete event">
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(et.id)}
+                    disabled={deleting[et.id]}
+                    className="rounded-lg p-2 text-text-muted transition-colors hover:bg-red-950 hover:text-red-400 disabled:opacity-50"
+                  >
+                    {deleting[et.id] ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </button>
+                </Tooltip>
               </div>
             </div>
           ))}
@@ -974,7 +982,7 @@ export default function EventTypesClient() {
       <Modal
         open={modalOpen}
         onClose={closeModal}
-        title={editTarget ? "Edit event type" : "New event type"}
+        title={editTarget ? "Edit event" : "New event"}
       >
         <EventForm
           form={form}

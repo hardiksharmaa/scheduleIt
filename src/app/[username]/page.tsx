@@ -125,7 +125,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
             {user.timezone}
           </div>
           <p className="mt-4 max-w-md text-sm text-text-muted">
-            Select an event type below to book a time.
+            Select an event below to book a time.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
         {user.eventTypes.length === 0 ? (
           <div className="rounded-xl border border-border bg-bg-secondary p-12 text-center">
             <Calendar className="mx-auto mb-3 h-10 w-10 text-border" />
-            <p className="text-sm font-medium text-white">No event types yet</p>
+            <p className="text-sm font-medium text-white">No events yet</p>
             <p className="mt-1 text-xs text-text-muted">
               {user.name} hasn&apos;t published any booking types yet.
             </p>
